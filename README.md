@@ -45,21 +45,19 @@ TacticsMatch.v is code due to Tej Chajed
 ## Utilities
 
 CpdtTactics.v
+
 TacticsMatch.v
+
 Decidability.v
+
 Utilities.v
+
 ListUtil.v
-Iteration.v
-
-
-Compile.v
-Reasoning.v
-Reflecting.v
 
 
 ## Data Structure Definitions
 
-Act.v
+### Act.v
 
  - a polymorphic type for sends, receives, inputs and outputs
 
