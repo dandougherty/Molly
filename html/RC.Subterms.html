@@ -1,0 +1,704 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>RC.Subterms</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library RC.Subterms</h1>
+
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.funind.FunInd.html#"><span class="id" title="library">FunInd</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#"><span class="id" title="library">Nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Bool.Bool.html#"><span class="id" title="library">Bool</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Bool.DecBool.html#"><span class="id" title="library">DecBool</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a>.<br/>
+<span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ListNotations"><span class="id" title="module">ListNotations</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">RC</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#"><span class="id" title="library">Utilities</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Sorts.html#"><span class="id" title="library">Sorts</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Term.html#"><span class="id" title="library">Term</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#"><span class="id" title="library">ListUtil</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.CpdtTactics.html#"><span class="id" title="library">CpdtTactics</span></a><br/>
+.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab80"></a><h1 class="section">Subterm Predicates: <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subtermP"><span class="id" title="inductive">subtermP</span></a></span> and friends</h1>
+
+<div class="paragraph"> </div>
+
+<a id="lab81"></a><h2 class="section">Immediate Subterm</h2>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a id="imm_subtermP" class="idref" href="#imm_subtermP"><span class="id" title="inductive">imm_subtermP</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;&nbsp;<a id="imm_subtermP_pr1" class="idref" href="#imm_subtermP_pr1"><span class="id" title="constructor">imm_subtermP_pr1</span></a> : <span class="id" title="keyword">∀</span> <a id="t1:3" class="idref" href="#t1:3"><span class="id" title="binder">t1</span></a> <a id="t2:4" class="idref" href="#t2:4"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#imm_subtermP:1"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#t1:3"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:3"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:4"><span class="id" title="variable">t2</span></a>)<br/>
+| <a id="imm_subtermP_pr2" class="idref" href="#imm_subtermP_pr2"><span class="id" title="constructor">imm_subtermP_pr2</span></a> : <span class="id" title="keyword">∀</span> <a id="t1:5" class="idref" href="#t1:5"><span class="id" title="binder">t1</span></a> <a id="t2:6" class="idref" href="#t2:6"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#imm_subtermP:1"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#t2:6"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:5"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:6"><span class="id" title="variable">t2</span></a>)<br/>
+| <a id="imm_subtermP_en1" class="idref" href="#imm_subtermP_en1"><span class="id" title="constructor">imm_subtermP_en1</span></a> : <span class="id" title="keyword">∀</span> <a id="t1:7" class="idref" href="#t1:7"><span class="id" title="binder">t1</span></a> <a id="t2:8" class="idref" href="#t2:8"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#imm_subtermP:1"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#t1:7"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:7"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:8"><span class="id" title="variable">t2</span></a>)<br/>
+| <a id="imm_subtermP_en2" class="idref" href="#imm_subtermP_en2"><span class="id" title="constructor">imm_subtermP_en2</span></a> : <span class="id" title="keyword">∀</span> <a id="t1:9" class="idref" href="#t1:9"><span class="id" title="binder">t1</span></a> <a id="t2:10" class="idref" href="#t2:10"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#imm_subtermP:1"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#t2:10"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:9"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:10"><span class="id" title="variable">t2</span></a>)<br/>
+| <a id="imm_subtermP_hs" class="idref" href="#imm_subtermP_hs"><span class="id" title="constructor">imm_subtermP_hs</span></a> : <span class="id" title="keyword">∀</span> <a id="t1:11" class="idref" href="#t1:11"><span class="id" title="binder">t1</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>, <a class="idref" href="RC.Subterms.html#imm_subtermP:1"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#t1:11"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Term.html#Hs"><span class="id" title="constructor">Hs</span></a> <a class="idref" href="RC.Subterms.html#t1:11"><span class="id" title="variable">t1</span></a>).<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Constructors</span> <a class="idref" href="RC.Subterms.html#imm_subtermP"><span class="id" title="inductive">imm_subtermP</span></a> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+TODO: <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Wf.html#well_founded"><span class="id" title="definition">well_founded</span></a></span> <span class="inlinecode"><span class="id" title="var">imm_subterm</span></span> 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab82"></a><h2 class="section">STRICT subterm here</h2>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a id="ssubtermP" class="idref" href="#ssubtermP"><span class="id" title="inductive">ssubtermP</span></a> (<a id="x:12" class="idref" href="#x:12"><span class="id" title="binder">x</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
+| <a id="ssubtermP_dir" class="idref" href="#ssubtermP_dir"><span class="id" title="constructor">ssubtermP_dir</span></a> (<a id="y:15" class="idref" href="#y:15"><span class="id" title="binder">y</span></a>:<a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Subterms.html#imm_subtermP"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:12"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#y:15"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#ssubtermP:13"><span class="id" title="inductive">ssubtermP</span></a> <a class="idref" href="RC.Subterms.html#x:12"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#y:15"><span class="id" title="variable">y</span></a><br/>
+| <a id="ssubtermP_trans" class="idref" href="#ssubtermP_trans"><span class="id" title="constructor">ssubtermP_trans</span></a> (<a id="y:16" class="idref" href="#y:16"><span class="id" title="binder">y</span></a> <a id="z:17" class="idref" href="#z:17"><span class="id" title="binder">z</span></a>:<a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Subterms.html#ssubtermP:13"><span class="id" title="inductive">ssubtermP</span></a> <a class="idref" href="RC.Subterms.html#x:12"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#y:16"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#ssubtermP:13"><span class="id" title="inductive">ssubtermP</span></a> <a class="idref" href="RC.Subterms.html#y:16"><span class="id" title="variable">y</span></a> <a class="idref" href="RC.Subterms.html#z:17"><span class="id" title="variable">z</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#ssubtermP:13"><span class="id" title="inductive">ssubtermP</span></a> <a class="idref" href="RC.Subterms.html#x:12"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#z:17"><span class="id" title="variable">z</span></a>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Constructors</span> <a class="idref" href="RC.Subterms.html#ssubtermP"><span class="id" title="inductive">ssubtermP</span></a> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+TODO: <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Wf.html#well_founded"><span class="id" title="definition">well_founded</span></a></span> <span class="inlinecode"><span class="id" title="var">ssubterm</span></span> 
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab83"></a><h2 class="section">Strict-or-Equal.</h2>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a id="subtermP" class="idref" href="#subtermP"><span class="id" title="inductive">subtermP</span></a> (<a id="x:18" class="idref" href="#x:18"><span class="id" title="binder">x</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
+| <a id="subtermP_refl" class="idref" href="#subtermP_refl"><span class="id" title="constructor">subtermP_refl</span></a> : <a class="idref" href="RC.Subterms.html#subtermP:19"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:18"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#x:18"><span class="id" title="variable">x</span></a><br/>
+| <a id="subtermP_dir" class="idref" href="#subtermP_dir"><span class="id" title="constructor">subtermP_dir</span></a> (<a id="y:21" class="idref" href="#y:21"><span class="id" title="binder">y</span></a>:<a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Subterms.html#imm_subtermP"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:18"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#y:21"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#subtermP:19"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:18"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#y:21"><span class="id" title="variable">y</span></a><br/>
+| <a id="subtermP_trans" class="idref" href="#subtermP_trans"><span class="id" title="constructor">subtermP_trans</span></a> (<a id="y:22" class="idref" href="#y:22"><span class="id" title="binder">y</span></a> <a id="z:23" class="idref" href="#z:23"><span class="id" title="binder">z</span></a>:<a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Subterms.html#subtermP:19"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:18"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#y:22"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#subtermP:19"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#y:22"><span class="id" title="variable">y</span></a> <a class="idref" href="RC.Subterms.html#z:23"><span class="id" title="variable">z</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#subtermP:19"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:18"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#z:23"><span class="id" title="variable">z</span></a>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Constructors</span> <a class="idref" href="RC.Subterms.html#subtermP"><span class="id" title="inductive">subtermP</span></a> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab84"></a><h1 class="section">Subterms as a List: <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a></span></h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <a id="subterms" class="idref" href="#subterms"><span class="id" title="definition">subterms</span></a> (<a id="t:24" class="idref" href="#t:24"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<span class="id" title="keyword">match</span> <a class="idref" href="RC.Subterms.html#t:24"><span class="id" title="variable">t</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span> ⇒ <a class="idref" href="RC.Subterms.html#t:24"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms:25"><span class="id" title="definition">subterms</span></a> <span class="id" title="var">t1</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms:25"><span class="id" title="definition">subterms</span></a> <span class="id" title="var">t2</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span> ⇒ <a class="idref" href="RC.Subterms.html#t:24"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms:25"><span class="id" title="definition">subterms</span></a> <span class="id" title="var">t1</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms:25"><span class="id" title="definition">subterms</span></a> <span class="id" title="var">t2</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Term.html#Hs"><span class="id" title="constructor">Hs</span></a> <span class="id" title="var">t1</span> ⇒    <a class="idref" href="RC.Subterms.html#t:24"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms:25"><span class="id" title="definition">subterms</span></a> <span class="id" title="var">t1</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">)</span></a> <br/>
+&nbsp;&nbsp;| <span class="id" title="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Subterms.html#t:24"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>).<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="in_subterms" class="idref" href="#in_subterms"><span class="id" title="lemma">in_subterms</span></a> <a id="t:27" class="idref" href="#t:27"><span class="id" title="binder">t</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t:27"><span class="id" title="variable">t</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:27"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">t</span> <span class="id" title="var">eqn</span>:<span class="id" title="var">et</span>; <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>; <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">in_subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a></span> means closed under taking subtertms 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="subterm_closed" class="idref" href="#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> (<a id="u:28" class="idref" href="#u:28"><span class="id" title="binder">u</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<a id="x:29" class="idref" href="#x:29"><span class="id" title="binder">x</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>), <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:29"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#u:28"><span class="id" title="variable">u</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#x:29"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#u:28"><span class="id" title="variable">u</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_subterm_closed" class="idref" href="#subterms_subterm_closed"><span class="id" title="lemma">subterms_subterm_closed</span></a> (<a id="t:30" class="idref" href="#t:30"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:30"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">t</span>; <span class="id" title="tactic">simpl</span>; <span class="id" title="tactic">auto</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;9:{ <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>; <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">subst</span>;   <span class="id" title="tactic">auto</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_app_or"><span class="id" title="lemma">in_app_or</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>. }<br/>
+&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;9:{ <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>; <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">subst</span>;   <span class="id" title="tactic">auto</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_app_or"><span class="id" title="lemma">in_app_or</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">auto</span>. }<br/>
+<br/>
+&nbsp;&nbsp;<span class="id" title="var">all</span>: <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>; <span class="id" title="var">inv</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">simpl</span>; <span class="id" title="var">now</span> <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Corollary</span> <a id="subterms_trans" class="idref" href="#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a> <a id="x:31" class="idref" href="#x:31"><span class="id" title="binder">x</span></a> <a id="y:32" class="idref" href="#y:32"><span class="id" title="binder">y</span></a> <a id="z:33" class="idref" href="#z:33"><span class="id" title="binder">z</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:31"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#y:32"><span class="id" title="variable">y</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#y:32"><span class="id" title="variable">y</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#z:33"><span class="id" title="variable">z</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:31"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#z:33"><span class="id" title="variable">z</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H1</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">a</span>:= <a class="idref" href="RC.Subterms.html#subterms_subterm_closed"><span class="id" title="lemma">subterms_subterm_closed</span></a>).<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">a</span> <span class="id" title="var">z</span> <span class="id" title="var">y</span> <span class="id" title="var">H2</span>);  <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_dir_subterm" class="idref" href="#subterms_dir_subterm"><span class="id" title="lemma">subterms_dir_subterm</span></a> <a id="x:34" class="idref" href="#x:34"><span class="id" title="binder">x</span></a> <a id="t:35" class="idref" href="#t:35"><span class="id" title="binder">t</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#imm_subtermP"><span class="id" title="inductive">imm_subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:34"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#t:35"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:34"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:35"><span class="id" title="variable">t</span></a>) .<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>. <span class="id" title="var">inv</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>. <span class="id" title="tactic">left</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#in_subterms"><span class="id" title="lemma">in_subterms</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>. <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#in_subterms"><span class="id" title="lemma">in_subterms</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>. <span class="id" title="tactic">left</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#in_subterms"><span class="id" title="lemma">in_subterms</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>. <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#in_subterms"><span class="id" title="lemma">in_subterms</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#in_subterms"><span class="id" title="lemma">in_subterms</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_dir_subterm</span> : <span class="id" title="var">core</span>.<br/>
+</div>
+
+<div class="doc">
+<a id="lab85"></a><h1 class="section">Lift <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a></span> to subterms of a set : <span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span></h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <a id="Subterms" class="idref" href="#Subterms"><span class="id" title="definition">Subterms</span></a> (<a id="T:36" class="idref" href="#T:36"><span class="id" title="binder">T</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Subterms.html#T:36"><span class="id" title="variable">T</span></a> <span class="id" title="keyword">with</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> ⇒ <a class="idref" href="RC.ListUtil.html#empty_set"><span class="id" title="definition">empty_set</span></a> <br/>
+&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#Subterms:37"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">rest</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Useful characterization of <span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span> 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="Subterms_char" class="idref" href="#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> (<a id="T:39" class="idref" href="#T:39"><span class="id" title="binder">T</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="x:40" class="idref" href="#x:40"><span class="id" title="binder">x</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:40"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:39"><span class="id" title="variable">T</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;-&gt;'_x"><span class="id" title="notation">↔</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">∃</span></a> <a id="t:41" class="idref" href="#t:41"><span class="id" title="binder">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">,</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t:41"><span class="id" title="variable">t</span></a> <a class="idref" href="RC.Subterms.html#T:39"><span class="id" title="variable">T</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:40"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:41"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">T</span> <span class="id" title="keyword">as</span> [ |<span class="id" title="var">t0</span> <span class="id" title="var">rest</span> <span class="id" title="var">IH</span>].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">inv</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_app_or"><span class="id" title="lemma">in_app_or</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">H1</span> | <span class="id" title="var">H2</span>].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- <span class="id" title="tactic">∃</span> <span class="id" title="var">t0</span>. <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- <span class="id" title="tactic">specialize</span> (<span class="id" title="var">IH</span> <span class="id" title="var">H2</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">IH</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H3</span>]].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>; <span class="id" title="tactic">auto</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;-     <span class="id" title="tactic">induction</span> <span class="id" title="var">T</span> <span class="id" title="keyword">as</span> [ |<span class="id" title="var">t0</span> <span class="id" title="var">rest</span> <span class="id" title="var">IH</span>].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]]; <span class="id" title="var">inv</span> <span class="id" title="var">H1</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H1</span>; <span class="id" title="tactic">subst</span>; <span class="id" title="tactic">simpl</span>; <span class="id" title="tactic">auto</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>. <span class="id" title="tactic">right</span>. <span class="id" title="tactic">apply</span> <span class="id" title="var">IH</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+ <span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span> is inflationary  
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="Subterms_incl" class="idref" href="#Subterms_incl"><span class="id" title="lemma">Subterms_incl</span></a> (<a id="T:42" class="idref" href="#T:42"><span class="id" title="binder">T</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#T:42"><span class="id" title="variable">T</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:42"><span class="id" title="variable">T</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">t</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>. <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>. <span class="id" title="var">easy</span>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#in_subterms"><span class="id" title="lemma">in_subterms</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">Subterms_incl</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span> is monotone 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="Subterms_monotone" class="idref" href="#Subterms_monotone"><span class="id" title="lemma">Subterms_monotone</span></a> (<a id="xs:43" class="idref" href="#xs:43"><span class="id" title="binder">xs</span></a> <a id="ys:44" class="idref" href="#ys:44"><span class="id" title="binder">ys</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;<a class="idref" href="RC.Subterms.html#xs:43"><span class="id" title="variable">xs</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#ys:44"><span class="id" title="variable">ys</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#xs:43"><span class="id" title="variable">xs</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ys:44"><span class="id" title="variable">ys</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">Hss</span> <span class="id" title="var">t</span> <span class="id" title="var">Hin</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">Hin</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">Hin</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t0</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">a</span>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <span class="id" title="var">t0</span> <span class="id" title="var">ys</span>).<br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">specialize</span> (<span class="id" title="var">Hss</span> <span class="id" title="var">t0</span> <span class="id" title="var">H1</span>). <span class="id" title="var">easy</span>. }<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>. <span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t0</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">Subterms_monotone</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab86"></a><h2 class="section">Relate <span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span> and <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a></span></h2>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="subterm_closed_Subterms_if" class="idref" href="#subterm_closed_Subterms_if"><span class="id" title="lemma">subterm_closed_Subterms_if</span></a> (<a id="u:45" class="idref" href="#u:45"><span class="id" title="binder">u</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> <a class="idref" href="RC.Subterms.html#u:45"><span class="id" title="variable">u</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#u:45"><span class="id" title="variable">u</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#u:45"><span class="id" title="variable">u</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span> <span class="id" title="var">x</span> <span class="id" title="var">Hin</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">Hin</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">Hin</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">H</span> <span class="id" title="var">t</span> <span class="id" title="var">H1</span>). <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterm_closed_Subterms_if</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterm_closed_Subterms_then" class="idref" href="#subterm_closed_Subterms_then"><span class="id" title="lemma">subterm_closed_Subterms_then</span></a> (<a id="T:46" class="idref" href="#T:46"><span class="id" title="binder">T</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:46"><span class="id" title="variable">T</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#T:46"><span class="id" title="variable">T</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> <a class="idref" href="RC.Subterms.html#T:46"><span class="id" title="variable">T</span></a> .<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span> <span class="id" title="var">t</span> <span class="id" title="var">H1</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">xInT</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">enough</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <span class="id" title="var">x</span> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">T</span>)).<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterm_closed_Subterms_then</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterm_closed_Subterms_iff" class="idref" href="#subterm_closed_Subterms_iff"><span class="id" title="lemma">subterm_closed_Subterms_iff</span></a> (<a id="T:47" class="idref" href="#T:47"><span class="id" title="binder">T</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:47"><span class="id" title="variable">T</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#T:47"><span class="id" title="variable">T</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;-&gt;'_x"><span class="id" title="notation">↔</span></a> <a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> <a class="idref" href="RC.Subterms.html#T:47"><span class="id" title="variable">T</span></a> .<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterm_closed_Subterms_then"><span class="id" title="lemma">subterm_closed_Subterms_then</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterm_closed_Subterms_if"><span class="id" title="lemma">subterm_closed_Subterms_if</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Rewrite</span> <a class="idref" href="RC.Subterms.html#subterm_closed_Subterms_iff"><span class="id" title="lemma">subterm_closed_Subterms_iff</span></a> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Important property : <span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span> of a set is <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a></span> 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="Subterms_subterm_closed" class="idref" href="#Subterms_subterm_closed"><span class="id" title="lemma">Subterms_subterm_closed</span></a> (<a id="T:48" class="idref" href="#T:48"><span class="id" title="binder">T</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:48"><span class="id" title="variable">T</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a>. <span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">T</span> <span class="id" title="keyword">as</span> [ |<span class="id" title="var">t</span> <span class="id" title="var">T'</span> <span class="id" title="var">IH</span>].<br/>
+&nbsp;&nbsp;- <span class="id" title="var">inv</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;- <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> ×.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_app_or"><span class="id" title="lemma">in_app_or</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>. <span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#incl_appl"><span class="id" title="lemma">incl_appl</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterms_subterm_closed"><span class="id" title="lemma">subterms_subterm_closed</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#incl_appr"><span class="id" title="lemma">incl_appr</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">Subterms_subterm_closed</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span> is a toplogical closure operator  Note that this is <span class="inlinecode"><a class="idref" href="RC.ListUtil.html#equi"><span class="id" title="definition">equi</span></a></span> not <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#eq"><span class="id" title="inductive">eq</span></a></span> 
+</div>
+<div class="code">
+<span class="id" title="keyword">Corollary</span> <a id="Subterms_closure" class="idref" href="#Subterms_closure"><span class="id" title="lemma">Subterms_closure</span></a> (<a id="T:49" class="idref" href="#T:49"><span class="id" title="binder">T</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:49"><span class="id" title="variable">T</span></a>) <a class="idref" href="RC.ListUtil.html#e4fcc283144c45c2c55c8add25c7e04d"><span class="id" title="notation">===</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#T:49"><span class="id" title="variable">T</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">a</span>: <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">T</span> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">T</span>)).<br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_incl"><span class="id" title="lemma">Subterms_incl</span></a>. }<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">b</span>: <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">T</span>) <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">T</span>).<br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterm_closed_Subterms_if"><span class="id" title="lemma">subterm_closed_Subterms_if</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_subterm_closed"><span class="id" title="lemma">Subterms_subterm_closed</span></a>. }<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">Subterms_closure</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <a id="subset_subterm_closed" class="idref" href="#subset_subterm_closed"><span class="id" title="lemma">subset_subterm_closed</span></a> (<a id="w:50" class="idref" href="#w:50"><span class="id" title="binder">w</span></a> <a id="u:51" class="idref" href="#u:51"><span class="id" title="binder">u</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subterm_closed"><span class="id" title="definition">subterm_closed</span></a> <a class="idref" href="RC.Subterms.html#u:51"><span class="id" title="variable">u</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#w:50"><span class="id" title="variable">w</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#u:51"><span class="id" title="variable">u</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#w:50"><span class="id" title="variable">w</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#u:51"><span class="id" title="variable">u</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H1</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">a</span>: <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">w</span> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">u</span>).<br/>
+&nbsp;&nbsp;{ <span class="id" title="var">now</span> <span class="id" title="tactic">apply</span>  <a class="idref" href="RC.Subterms.html#Subterms_monotone"><span class="id" title="lemma">Subterms_monotone</span></a>. }  <br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">b</span>: <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">u</span> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a>  <span class="id" title="var">u</span>).<br/>
+&nbsp;&nbsp;{ <span class="id" title="var">now</span> <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterm_closed_Subterms_iff"><span class="id" title="lemma">subterm_closed_Subterms_iff</span></a>. }<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#incl_tran"><span class="id" title="lemma">incl_tran</span></a> <span class="id" title="var">a</span> <span class="id" title="var">b</span> ).<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subset_subterm_closed</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab87"></a><h2 class="section">Relate <span class="inlinecode"><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a></span>  and <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a></span></h2>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_if_subtermP" class="idref" href="#subterms_if_subtermP"><span class="id" title="lemma">subterms_if_subtermP</span></a> <a id="x:52" class="idref" href="#x:52"><span class="id" title="binder">x</span></a> <a id="t:53" class="idref" href="#t:53"><span class="id" title="binder">t</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subtermP"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:52"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#t:53"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:52"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:53"><span class="id" title="variable">t</span></a>) .<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">inv</span> <span class="id" title="var">H</span>; <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">now</span> <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a> <span class="id" title="keyword">with</span> <span class="id" title="var">y</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_if_subtermP</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="if_subterms_subtermP" class="idref" href="#if_subterms_subtermP"><span class="id" title="lemma">if_subterms_subtermP</span></a> <a id="x:54" class="idref" href="#x:54"><span class="id" title="binder">x</span></a> <a id="t:55" class="idref" href="#t:55"><span class="id" title="binder">t</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:54"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:55"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subtermP"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:54"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#t:55"><span class="id" title="variable">t</span></a> .<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">t</span>; <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_app_or"><span class="id" title="lemma">in_app_or</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H0</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H0</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <a class="idref" href="RC.Subterms.html#subtermP_trans"><span class="id" title="constructor">subtermP_trans</span></a> <span class="id" title="keyword">with</span> <span class="id" title="var">t1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subtermP_dir"><span class="id" title="constructor">subtermP_dir</span></a>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#imm_subtermP_pr1"><span class="id" title="constructor">imm_subtermP_pr1</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <a class="idref" href="RC.Subterms.html#subtermP_trans"><span class="id" title="constructor">subtermP_trans</span></a> <span class="id" title="keyword">with</span> <span class="id" title="var">t2</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subtermP_dir"><span class="id" title="constructor">subtermP_dir</span></a>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#imm_subtermP_pr2"><span class="id" title="constructor">imm_subtermP_pr2</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_app_or"><span class="id" title="lemma">in_app_or</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H0</span>; <span class="id" title="tactic">destruct</span> <span class="id" title="var">H0</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <a class="idref" href="RC.Subterms.html#subtermP_trans"><span class="id" title="constructor">subtermP_trans</span></a> <span class="id" title="keyword">with</span> <span class="id" title="var">t1</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subtermP_dir"><span class="id" title="constructor">subtermP_dir</span></a>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#imm_subtermP_en1"><span class="id" title="constructor">imm_subtermP_en1</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <a class="idref" href="RC.Subterms.html#subtermP_trans"><span class="id" title="constructor">subtermP_trans</span></a> <span class="id" title="keyword">with</span> <span class="id" title="var">t2</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subtermP_dir"><span class="id" title="constructor">subtermP_dir</span></a>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#imm_subtermP_en2"><span class="id" title="constructor">imm_subtermP_en2</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">crush</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">eapply</span> <a class="idref" href="RC.Subterms.html#subtermP_trans"><span class="id" title="constructor">subtermP_trans</span></a> <span class="id" title="keyword">with</span> <span class="id" title="var">t</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subtermP_dir"><span class="id" title="constructor">subtermP_dir</span></a>. <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#imm_subtermP_hs"><span class="id" title="constructor">imm_subtermP_hs</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">if_subterms_subtermP</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Theorem</span> <a id="subterms_subtermP" class="idref" href="#subterms_subtermP"><span class="id" title="lemma">subterms_subtermP</span></a> <a id="x:56" class="idref" href="#x:56"><span class="id" title="binder">x</span></a> <a id="t:57" class="idref" href="#t:57"><span class="id" title="binder">t</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subtermP"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#x:56"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Subterms.html#t:57"><span class="id" title="variable">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;-&gt;'_x"><span class="id" title="notation">↔</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#x:56"><span class="id" title="variable">x</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:57"><span class="id" title="variable">t</span></a>) .<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>;  <span class="id" title="var">now</span> <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subterms_if_subtermP"><span class="id" title="lemma">subterms_if_subtermP</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>; <span class="id" title="var">now</span> <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#if_subterms_subtermP"><span class="id" title="lemma">if_subterms_subtermP</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Rewrite</span> <a class="idref" href="RC.Subterms.html#subterms_subtermP"><span class="id" title="lemma">subterms_subtermP</span></a> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+If xs is a set of subterms of ys then the subterms of xs are all subterms of ys 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a id="subterms_subterms" class="idref" href="#subterms_subterms"><span class="id" title="lemma">subterms_subterms</span></a> (<a id="xs:58" class="idref" href="#xs:58"><span class="id" title="binder">xs</span></a> <a id="ys:59" class="idref" href="#ys:59"><span class="id" title="binder">ys</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.ListSet.html#set"><span class="id" title="definition">set</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#xs:58"><span class="id" title="variable">xs</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ys:59"><span class="id" title="variable">ys</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#xs:58"><span class="id" title="variable">xs</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a> <a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ys:59"><span class="id" title="variable">ys</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_monotone"><span class="id" title="lemma">Subterms_monotone</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">a</span>:= (<a class="idref" href="RC.Subterms.html#Subterms_closure"><span class="id" title="lemma">Subterms_closure</span></a> <span class="id" title="var">ys</span>) ).<br/>
+&nbsp;<span class="id" title="tactic">eapply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#incl_tran"><span class="id" title="lemma">incl_tran</span></a> <span class="id" title="keyword">with</span> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <span class="id" title="var">ys</span>)).<br/>
+&nbsp;<span class="id" title="var">easy</span>. <span class="id" title="var">now</span> <span class="id" title="tactic">unfold</span> <a class="idref" href="RC.ListUtil.html#equi"><span class="id" title="definition">equi</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">a</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Rewrite</span> <a class="idref" href="RC.Subterms.html#subterms_subterms"><span class="id" title="lemma">subterms_subterms</span></a> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab88"></a><h1 class="section">General facts about <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a></span></h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterm_refl" class="idref" href="#subterm_refl"><span class="id" title="lemma">subterm_refl</span></a> (<a id="t:60" class="idref" href="#t:60"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#subtermP"><span class="id" title="inductive">subtermP</span></a> <a class="idref" href="RC.Subterms.html#t:60"><span class="id" title="variable">t</span></a> <a class="idref" href="RC.Subterms.html#t:60"><span class="id" title="variable">t</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#subtermP_refl"><span class="id" title="constructor">subtermP_refl</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterm_refl</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab89"></a><h1 class="section">Domain-specific boilerplate about <span class="inlinecode"><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a></span></h1>
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="in_Subterms" class="idref" href="#in_Subterms"><span class="id" title="lemma">in_Subterms</span></a> (<a id="ts:61" class="idref" href="#ts:61"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t:62" class="idref" href="#t:62"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t:62"><span class="id" title="variable">t</span></a> <a class="idref" href="RC.Subterms.html#ts:61"><span class="id" title="variable">ts</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t:62"><span class="id" title="variable">t</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a>  <a class="idref" href="RC.Subterms.html#ts:61"><span class="id" title="variable">ts</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">in_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_Subterms" class="idref" href="#subterms_Subterms"><span class="id" title="lemma">subterms_Subterms</span></a> (<a id="ts:63" class="idref" href="#ts:63"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t:64" class="idref" href="#t:64"><span class="id" title="binder">t</span></a> <a id="tsub:65" class="idref" href="#tsub:65"><span class="id" title="binder">tsub</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t:64"><span class="id" title="variable">t</span></a> <a class="idref" href="RC.Subterms.html#ts:63"><span class="id" title="variable">ts</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:64"><span class="id" title="variable">t</span></a><a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">)</span></a> <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">&lt;&lt;=</span></a>  <a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a>  <a class="idref" href="RC.Subterms.html#ts:63"><span class="id" title="variable">ts</span></a><a class="idref" href="RC.ListUtil.html#25e51f6c9a7647f5a562b237127007c4"><span class="id" title="notation">)</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H1</span> <span class="id" title="var">t0</span> <span class="id" title="var">H2</span> .<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_pr1" class="idref" href="#subterms_pr1"><span class="id" title="lemma">subterms_pr1</span></a> <a id="t1:66" class="idref" href="#t1:66"><span class="id" title="binder">t1</span></a> <a id="t2:67" class="idref" href="#t2:67"><span class="id" title="binder">t2</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:66"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:66"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:67"><span class="id" title="variable">t2</span></a>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">right</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>;  <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_pr1</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="pr1_subterms" class="idref" href="#pr1_subterms"><span class="id" title="lemma">pr1_subterms</span></a> (<a id="t:68" class="idref" href="#t:68"><span class="id" title="binder">t</span></a> <a id="t1:69" class="idref" href="#t1:69"><span class="id" title="binder">t1</span></a> <a id="t2:70" class="idref" href="#t2:70"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:69"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:70"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:68"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:69"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:68"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Subterms.html#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a>) <span class="id" title="keyword">with</span> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span>);<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">pr1_subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="pr1_Subterms" class="idref" href="#pr1_Subterms"><span class="id" title="lemma">pr1_Subterms</span></a> (<a id="ts:71" class="idref" href="#ts:71"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t1:72" class="idref" href="#t1:72"><span class="id" title="binder">t1</span></a> <a id="t2:73" class="idref" href="#t2:73"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:72"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:73"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:71"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:72"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:71"><span class="id" title="variable">ts</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#pr1_subterms"><span class="id" title="lemma">pr1_subterms</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">pr1_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_pr2" class="idref" href="#subterms_pr2"><span class="id" title="lemma">subterms_pr2</span></a> <a id="t1:74" class="idref" href="#t1:74"><span class="id" title="binder">t1</span></a> <a id="t2:75" class="idref" href="#t2:75"><span class="id" title="binder">t2</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t2:75"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:74"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:75"><span class="id" title="variable">t2</span></a>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">right</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>;  <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_pr2</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="pr2_subterms" class="idref" href="#pr2_subterms"><span class="id" title="lemma">pr2_subterms</span></a> (<a id="t:76" class="idref" href="#t:76"><span class="id" title="binder">t</span></a> <a id="t1:77" class="idref" href="#t1:77"><span class="id" title="binder">t1</span></a> <a id="t2:78" class="idref" href="#t2:78"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:77"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:78"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:76"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t2:78"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:76"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Subterms.html#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a>) <span class="id" title="keyword">with</span> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span>);<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">pr2_subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="pr2_Subterms" class="idref" href="#pr2_Subterms"><span class="id" title="lemma">pr2_Subterms</span></a>  (<a id="ts:79" class="idref" href="#ts:79"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t1:80" class="idref" href="#t1:80"><span class="id" title="binder">t1</span></a> <a id="t2:81" class="idref" href="#t2:81"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#Pr"><span class="id" title="constructor">Pr</span></a> <a class="idref" href="RC.Subterms.html#t1:80"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:81"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:79"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t2:81"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:79"><span class="id" title="variable">ts</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#pr2_subterms"><span class="id" title="lemma">pr2_subterms</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">pr2_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_en1" class="idref" href="#subterms_en1"><span class="id" title="lemma">subterms_en1</span></a> <a id="t1:82" class="idref" href="#t1:82"><span class="id" title="binder">t1</span></a> <a id="t2:83" class="idref" href="#t2:83"><span class="id" title="binder">t2</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:82"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:82"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:83"><span class="id" title="variable">t2</span></a>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">right</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>;  <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_en1</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="en1_subterms" class="idref" href="#en1_subterms"><span class="id" title="lemma">en1_subterms</span></a> (<a id="t:84" class="idref" href="#t:84"><span class="id" title="binder">t</span></a> <a id="t1:85" class="idref" href="#t1:85"><span class="id" title="binder">t1</span></a> <a id="t2:86" class="idref" href="#t2:86"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:85"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:86"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:84"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:85"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:84"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Subterms.html#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a>) <span class="id" title="keyword">with</span> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span>);<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">en1_subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="en1_Subterms" class="idref" href="#en1_Subterms"><span class="id" title="lemma">en1_Subterms</span></a>  (<a id="ts:87" class="idref" href="#ts:87"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t1:88" class="idref" href="#t1:88"><span class="id" title="binder">t1</span></a> <a id="t2:89" class="idref" href="#t2:89"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:88"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:89"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:87"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:88"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:87"><span class="id" title="variable">ts</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#en1_subterms"><span class="id" title="lemma">en1_subterms</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">en1_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_en2" class="idref" href="#subterms_en2"><span class="id" title="lemma">subterms_en2</span></a> <a id="t1:90" class="idref" href="#t1:90"><span class="id" title="binder">t1</span></a> <a id="t2:91" class="idref" href="#t2:91"><span class="id" title="binder">t2</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t2:91"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:90"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:91"><span class="id" title="variable">t2</span></a>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">right</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#in_or_app"><span class="id" title="lemma">in_or_app</span></a>;  <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_en2</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="en2_subterms" class="idref" href="#en2_subterms"><span class="id" title="lemma">en2_subterms</span></a> (<a id="t:92" class="idref" href="#t:92"><span class="id" title="binder">t</span></a> <a id="t1:93" class="idref" href="#t1:93"><span class="id" title="binder">t1</span></a> <a id="t2:94" class="idref" href="#t2:94"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:93"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:94"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:92"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t2:94"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:92"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Subterms.html#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a>) <span class="id" title="keyword">with</span> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <span class="id" title="var">t1</span> <span class="id" title="var">t2</span>);<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">en2_subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="en2_Subterms" class="idref" href="#en2_Subterms"><span class="id" title="lemma">en2_Subterms</span></a>  (<a id="ts:95" class="idref" href="#ts:95"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t1:96" class="idref" href="#t1:96"><span class="id" title="binder">t1</span></a> <a id="t2:97" class="idref" href="#t2:97"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#En"><span class="id" title="constructor">En</span></a> <a class="idref" href="RC.Subterms.html#t1:96"><span class="id" title="variable">t1</span></a> <a class="idref" href="RC.Subterms.html#t2:97"><span class="id" title="variable">t2</span></a>) (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:95"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t2:97"><span class="id" title="variable">t2</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:95"><span class="id" title="variable">ts</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#en2_subterms"><span class="id" title="lemma">en2_subterms</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">en2_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="subterms_hs" class="idref" href="#subterms_hs"><span class="id" title="lemma">subterms_hs</span></a> <a id="t1:98" class="idref" href="#t1:98"><span class="id" title="binder">t1</span></a> :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:98"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> (<a class="idref" href="RC.Term.html#Hs"><span class="id" title="constructor">Hs</span></a> <a class="idref" href="RC.Subterms.html#t1:98"><span class="id" title="variable">t1</span></a>)).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">right</span>;  <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">subterms_hs</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="hs_subterms" class="idref" href="#hs_subterms"><span class="id" title="lemma">hs_subterms</span></a> (<a id="t:99" class="idref" href="#t:99"><span class="id" title="binder">t</span></a> <a id="t1:100" class="idref" href="#t1:100"><span class="id" title="binder">t1</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>):<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#Hs"><span class="id" title="constructor">Hs</span></a> <a class="idref" href="RC.Subterms.html#t1:100"><span class="id" title="variable">t1</span></a>) (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:99"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:100"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#subterms"><span class="id" title="definition">subterms</span></a> <a class="idref" href="RC.Subterms.html#t:99"><span class="id" title="variable">t</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Subterms.html#subterms_trans"><span class="id" title="lemma">subterms_trans</span></a>) <span class="id" title="keyword">with</span> (<a class="idref" href="RC.Term.html#Hs"><span class="id" title="constructor">Hs</span></a> <span class="id" title="var">t1</span> );<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">hs_subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="hs_Subterms" class="idref" href="#hs_Subterms"><span class="id" title="lemma">hs_Subterms</span></a>  (<a id="ts:101" class="idref" href="#ts:101"><span class="id" title="binder">ts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) (<a id="t1:102" class="idref" href="#t1:102"><span class="id" title="binder">t1</span></a> <a id="t2:103" class="idref" href="#t2:103"><span class="id" title="binder">t2</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> (<a class="idref" href="RC.Term.html#Hs"><span class="id" title="constructor">Hs</span></a> <a class="idref" href="RC.Subterms.html#t1:102"><span class="id" title="variable">t1</span></a>) (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:101"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">In</span></a> <a class="idref" href="RC.Subterms.html#t1:102"><span class="id" title="variable">t1</span></a> (<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> <a class="idref" href="RC.Subterms.html#ts:101"><span class="id" title="variable">ts</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#Subterms_char"><span class="id" title="lemma">Subterms_char</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">t</span> [<span class="id" title="var">H1</span> <span class="id" title="var">H2</span>]].<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Subterms.html#hs_subterms"><span class="id" title="lemma">hs_subterms</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">H2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">∃</span> <span class="id" title="var">t</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">hs_Subterms</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+
+<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

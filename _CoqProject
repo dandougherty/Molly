@@ -1,0 +1,39 @@
+-Q . "RC"
+
+CpdtTactics.v
+TacticsMatch.v
+Decidability.v
+Utilities.v
+ListUtil.v
+Iteration.v
+
+Act.v
+Sorts.v
+
+Runtime.v
+
+Term.v
+Subterms.v
+
+Role.v
+TranscriptsRole.v
+
+Proc.v
+TranscriptsProc.v
+
+SaturationClass.v
+SaturationRules.v
+SaturationLoop.v
+
+Compile.v
+Reasoning.v
+Reflecting.v
+
+roleToRole.v
+
+# don't evaluate these with each compile
+# Examples.v
+# Extraction.v
+
+
+

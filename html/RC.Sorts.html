@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>RC.Sorts</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library RC.Sorts</h1>
+
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">RC</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#"><span class="id" title="library">Utilities</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Decidability.html#"><span class="id" title="library">Decidability</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab66"></a><h1 class="section">Sorts</h1>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a id="sort" class="idref" href="#sort"><span class="id" title="inductive">sort</span></a> : <span class="id" title="keyword">Set</span> :=<br/>
+&nbsp;&nbsp;<a id="Text" class="idref" href="#Text"><span class="id" title="constructor">Text</span></a>                       <br/>
+| <a id="Data" class="idref" href="#Data"><span class="id" title="constructor">Data</span></a>                       <br/>
+| <a id="Name" class="idref" href="#Name"><span class="id" title="constructor">Name</span></a>                       <br/>
+| <a id="Skey" class="idref" href="#Skey"><span class="id" title="constructor">Skey</span></a>                       <br/>
+| <a id="Akey" class="idref" href="#Akey"><span class="id" title="constructor">Akey</span></a>                       <br/>
+| <a id="Ikey" class="idref" href="#Ikey"><span class="id" title="constructor">Ikey</span></a>                       <br/>
+| <a id="Mesg" class="idref" href="#Mesg"><span class="id" title="constructor">Mesg</span></a>                       <br/>
+| <a id="Chan" class="idref" href="#Chan"><span class="id" title="constructor">Chan</span></a>                       <br/>
+.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="sort_eq_dec" class="idref" href="#sort_eq_dec"><span class="id" title="definition">sort_eq_dec</span></a>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <a id="x:3" class="idref" href="#x:3"><span class="id" title="binder">x</span></a> <a id="y:4" class="idref" href="#y:4"><span class="id" title="binder">y</span></a>: <a class="idref" href="RC.Sorts.html#sort"><span class="id" title="inductive">sort</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">{</span></a><a class="idref" href="RC.Sorts.html#x:3"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Sorts.html#y:4"><span class="id" title="variable">y</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">}</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">+</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">{</span></a><a class="idref" href="RC.Sorts.html#x:3"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;&gt;'_x"><span class="id" title="notation">≠</span></a> <a class="idref" href="RC.Sorts.html#y:4"><span class="id" title="variable">y</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Specif.html#87727981cdc1579fef00b9d9c1d3b9da"><span class="id" title="notation">}</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">decide</span> <span class="id" title="var">equality</span>.<br/>
+<span class="id" title="keyword">Defined</span>.<br/>
+#[<span class="id" title="var">global</span>]<br/>
+<span class="id" title="keyword">Hint</span> <span class="id" title="keyword">Resolve</span> <span class="id" title="var">sort_eq_dec</span> : <span class="id" title="var">core</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="sort_eqb" class="idref" href="#sort_eqb"><span class="id" title="definition">sort_eqb</span></a> <a id="x:5" class="idref" href="#x:5"><span class="id" title="binder">x</span></a> <a id="y:6" class="idref" href="#y:6"><span class="id" title="binder">y</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bool"><span class="id" title="inductive">bool</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">if</span> <a class="idref" href="RC.Sorts.html#sort_eq_dec"><span class="id" title="definition">sort_eq_dec</span></a> <a class="idref" href="RC.Sorts.html#x:5"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Sorts.html#y:6"><span class="id" title="variable">y</span></a> <span class="id" title="keyword">then</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">else</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="sort_eq_correct" class="idref" href="#sort_eq_correct"><span class="id" title="lemma">sort_eq_correct</span></a>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <a id="x:7" class="idref" href="#x:7"><span class="id" title="binder">x</span></a> <a id="y:8" class="idref" href="#y:8"><span class="id" title="binder">y</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Sorts.html#sort_eqb"><span class="id" title="definition">sort_eqb</span></a> <a class="idref" href="RC.Sorts.html#x:7"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Sorts.html#y:8"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;-&gt;'_x"><span class="id" title="notation">↔</span></a> <a class="idref" href="RC.Sorts.html#x:7"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Sorts.html#y:8"><span class="id" title="variable">y</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Sorts.html#sort_eqb"><span class="id" title="definition">sort_eqb</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> (<a class="idref" href="RC.Sorts.html#sort_eq_dec"><span class="id" title="definition">sort_eq_dec</span></a> <span class="id" title="var">x</span> <span class="id" title="var">y</span>); <span class="id" title="tactic">subst</span>; <span class="id" title="var">easy</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="sort_eq_complete" class="idref" href="#sort_eq_complete"><span class="id" title="lemma">sort_eq_complete</span></a>:<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <a id="x:9" class="idref" href="#x:9"><span class="id" title="binder">x</span></a> <a id="y:10" class="idref" href="#y:10"><span class="id" title="binder">y</span></a>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Sorts.html#sort_eqb"><span class="id" title="definition">sort_eqb</span></a> <a class="idref" href="RC.Sorts.html#x:9"><span class="id" title="variable">x</span></a> <a class="idref" href="RC.Sorts.html#y:10"><span class="id" title="variable">y</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;-&gt;'_x"><span class="id" title="notation">↔</span></a> <a class="idref" href="RC.Sorts.html#x:9"><span class="id" title="variable">x</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'&lt;&gt;'_x"><span class="id" title="notation">≠</span></a> <a class="idref" href="RC.Sorts.html#y:10"><span class="id" title="variable">y</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Sorts.html#sort_eqb"><span class="id" title="definition">sort_eqb</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> (<a class="idref" href="RC.Sorts.html#sort_eq_dec"><span class="id" title="definition">sort_eq_dec</span></a> <span class="id" title="var">x</span> <span class="id" title="var">y</span>); <span class="id" title="tactic">subst</span>; <span class="id" title="var">easy</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The inverse sort 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="inv_sort" class="idref" href="#inv_sort"><span class="id" title="definition">inv_sort</span></a> (<a id="x:11" class="idref" href="#x:11"><span class="id" title="binder">x</span></a>: <a class="idref" href="RC.Sorts.html#sort"><span class="id" title="inductive">sort</span></a>): <a class="idref" href="RC.Sorts.html#sort"><span class="id" title="inductive">sort</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Sorts.html#x:11"><span class="id" title="variable">x</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Akey"><span class="id" title="constructor">Akey</span></a> ⇒ <a class="idref" href="RC.Sorts.html#Ikey"><span class="id" title="constructor">Ikey</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Ikey"><span class="id" title="constructor">Ikey</span></a> ⇒ <a class="idref" href="RC.Sorts.html#Akey"><span class="id" title="constructor">Akey</span></a><br/>
+&nbsp;&nbsp;| <span class="id" title="var">s</span> ⇒ <span class="id" title="var">s</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="is_asym_key_sort" class="idref" href="#is_asym_key_sort"><span class="id" title="definition">is_asym_key_sort</span></a> (<a id="s:13" class="idref" href="#s:13"><span class="id" title="binder">s</span></a>: <a class="idref" href="RC.Sorts.html#sort"><span class="id" title="inductive">sort</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bool"><span class="id" title="inductive">bool</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Sorts.html#s:13"><span class="id" title="variable">s</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Akey"><span class="id" title="constructor">Akey</span></a> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Ikey"><span class="id" title="constructor">Ikey</span></a> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#true"><span class="id" title="constructor">true</span></a><br/>
+&nbsp;&nbsp;| <span class="id" title="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#false"><span class="id" title="constructor">false</span></a><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+
+<br/>
+<span class="id" title="keyword">Open</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">string_scope</span>.<br/>
+#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Instance</span> <a id="show_sort" class="idref" href="#show_sort"><span class="id" title="instance">show_sort</span></a> : <a class="idref" href="RC.Utilities.html#Show"><span class="id" title="class">Show</span></a> <a class="idref" href="RC.Sorts.html#sort"><span class="id" title="inductive">sort</span></a> := <br/>
+&nbsp;&nbsp;{<a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> := <span class="id" title="keyword">fun</span> <a id="s:15" class="idref" href="#s:15"><span class="id" title="binder">s</span></a> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Sorts.html#s:15"><span class="id" title="variable">s</span></a> <span class="id" title="keyword">with</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Sorts.html#Text"><span class="id" title="constructor">Text</span></a>  ⇒ "Text"       <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Data"><span class="id" title="constructor">Data</span></a>  ⇒ "Data"       <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Name"><span class="id" title="constructor">Name</span></a> ⇒ "Name"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Skey"><span class="id" title="constructor">Skey</span></a> ⇒ "Skey"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Akey"><span class="id" title="constructor">Akey</span></a> ⇒ "Akey"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Ikey"><span class="id" title="constructor">Ikey</span></a> ⇒ "Ikey"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Mesg"><span class="id" title="constructor">Mesg</span></a> ⇒ "Mesg"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Sorts.html#Chan"><span class="id" title="constructor">Chan</span></a> ⇒ "Chan"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>}.<br/>
+<span class="id" title="keyword">Close</span> <span class="id" title="keyword">Scope</span> <span class="id" title="var">string_scope</span>.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -18,7 +18,7 @@ proofs.
 
 This code  builds under Coq 8.17.1 with the command
 
-make -f CoqMakefile
+make 
 
 CoqDoc documentation can be built by 
 
@@ -36,6 +36,8 @@ see also https://sozeau.gitlabpages.inria.fr/www/research/coq/equations.en.html
 Some code in Decidability.v is adapted from the stdpp library
 and from Gert Smolka's Base library
 
+Some code in Utilities.v and ListUtil.v is from Smolka's Base library
+ 
 CpdtTactics.v is mostly due to Adam Chlipala
 
 TacticsMatch.v is code due to Tej Chajed
@@ -57,7 +59,7 @@ ListUtil.v
 
 ## Data Structure Definitions
 
-### Act.v
+Act.v
 
  - a polymorphic type for sends, receives, inputs and outputs
 

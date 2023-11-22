@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>RC.roleToRole</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library RC.roleToRole</h1>
+
+<div class="code">
+</div>
+
+<div class="doc">
+Protocol Roles from RoleTran.
+
+<div class="paragraph"> </div>
+
+RoleTran is copyright (c) 2021 The MITRE Corporation
+
+<div class="paragraph"> </div>
+
+In this file we 
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> recapitulate the definition of role from module Role of Roletran.
+  The type <span class="inlinecode"><a class="idref" href="RC.roleToRole.html#role"><span class="id" title="record">role</span></a></span> is defied there.
+
+<div class="paragraph"> </div>
+
+
+</li>
+<li> write a conversion <span class="inlinecode"><a class="idref" href="RC.roleToRole.html#role_to_Role"><span class="id" title="definition">role_to_Role</span></a></span> from these roles to our Roles
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a>   .<br/>
+<span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ListNotations"><span class="id" title="module">ListNotations</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">RC</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="RC.Act.html#"><span class="id" title="library">Act</span></a> <a class="idref" href="RC.Term.html#"><span class="id" title="library">Term</span></a> <a class="idref" href="RC.Role.html#"><span class="id" title="library">Role</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Make alg a synonym for Term 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="alg" class="idref" href="#alg"><span class="id" title="definition">alg</span></a> := <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+This is from Roletran 
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a id="evt" class="idref" href="#evt"><span class="id" title="inductive">evt</span></a> : <span class="id" title="keyword">Set</span> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a id="Sd" class="idref" href="#Sd"><span class="id" title="constructor">Sd</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.roleToRole.html#alg"><span class="id" title="definition">alg</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.roleToRole.html#evt:1"><span class="id" title="inductive">evt</span></a> | <a id="Rv" class="idref" href="#Rv"><span class="id" title="constructor">Rv</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.roleToRole.html#alg"><span class="id" title="definition">alg</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.roleToRole.html#evt:1"><span class="id" title="inductive">evt</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Record</span> <a id="role" class="idref" href="#role"><span class="id" title="record">role</span></a>: <span class="id" title="keyword">Set</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="var">mkRole</span> {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="trace" class="idref" href="#trace"><span class="id" title="projection">trace</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.roleToRole.html#evt"><span class="id" title="inductive">evt</span></a>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="uniqs" class="idref" href="#uniqs"><span class="id" title="projection">uniqs</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.roleToRole.html#alg"><span class="id" title="definition">alg</span></a>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="inputs" class="idref" href="#inputs"><span class="id" title="projection">inputs</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.roleToRole.html#alg"><span class="id" title="definition">alg</span></a>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="outputs" class="idref" href="#outputs"><span class="id" title="projection">outputs</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.roleToRole.html#alg"><span class="id" title="definition">alg</span></a> }.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The conversion code 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="actions_from_inputs" class="idref" href="#actions_from_inputs"><span class="id" title="definition">actions_from_inputs</span></a> (<a id="ts:8" class="idref" href="#ts:8"><span class="id" title="binder">ts</span></a> : <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :=<br/>
+&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#map"><span class="id" title="definition">map</span></a> (<span class="id" title="keyword">fun</span> <a id="t:9" class="idref" href="#t:9"><span class="id" title="binder">t</span></a> ⇒ <a class="idref" href="RC.Act.html#Prm"><span class="id" title="constructor">Prm</span></a> <a class="idref" href="RC.roleToRole.html#t:9"><span class="id" title="variable">t</span></a>) <a class="idref" href="RC.roleToRole.html#ts:8"><span class="id" title="variable">ts</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="actions_from_outputs" class="idref" href="#actions_from_outputs"><span class="id" title="definition">actions_from_outputs</span></a> (<a id="ts:10" class="idref" href="#ts:10"><span class="id" title="binder">ts</span></a> : <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#map"><span class="id" title="definition">map</span></a> (<span class="id" title="keyword">fun</span> <a id="t:11" class="idref" href="#t:11"><span class="id" title="binder">t</span></a> ⇒ <a class="idref" href="RC.Act.html#Ret"><span class="id" title="constructor">Ret</span></a> <a class="idref" href="RC.roleToRole.html#t:11"><span class="id" title="variable">t</span></a>) <a class="idref" href="RC.roleToRole.html#ts:10"><span class="id" title="variable">ts</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="role_evt_to_act_term" class="idref" href="#role_evt_to_act_term"><span class="id" title="definition">role_evt_to_act_term</span></a> (<a id="ev:12" class="idref" href="#ev:12"><span class="id" title="binder">ev</span></a>: <a class="idref" href="RC.roleToRole.html#evt"><span class="id" title="inductive">evt</span></a>) : <a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.roleToRole.html#ev:12"><span class="id" title="variable">ev</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.roleToRole.html#Sd"><span class="id" title="constructor">Sd</span></a> <span class="id" title="var">n</span> <span class="id" title="var">a</span> ⇒ <a class="idref" href="RC.Act.html#Snd"><span class="id" title="constructor">Snd</span></a> (<a class="idref" href="RC.Term.html#Ch"><span class="id" title="constructor">Term.Ch</span></a> <span class="id" title="var">n</span>) <span class="id" title="var">a</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.roleToRole.html#Rv"><span class="id" title="constructor">Rv</span></a> <span class="id" title="var">n</span> <span class="id" title="var">a</span> ⇒ <a class="idref" href="RC.Act.html#Rcv"><span class="id" title="constructor">Rcv</span></a> (<a class="idref" href="RC.Term.html#Ch"><span class="id" title="constructor">Term.Ch</span></a> <span class="id" title="var">n</span>) <span class="id" title="var">a</span><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Note the the <span class="inlinecode"><a class="idref" href="RC.roleToRole.html#uniqs"><span class="id" title="projection">uniqs</span></a></span> field in <span class="inlinecode"><a class="idref" href="RC.roleToRole.html#role"><span class="id" title="record">role</span></a></span> is ignored here 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="role_to_Role" class="idref" href="#role_to_Role"><span class="id" title="definition">role_to_Role</span></a> (<a id="r:14" class="idref" href="#r:14"><span class="id" title="binder">r</span></a> : <a class="idref" href="RC.roleToRole.html#role"><span class="id" title="record">role</span></a>) : <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.roleToRole.html#actions_from_inputs"><span class="id" title="definition">actions_from_inputs</span></a> (<a class="idref" href="RC.roleToRole.html#inputs"><span class="id" title="projection">inputs</span></a> <a class="idref" href="RC.roleToRole.html#r:14"><span class="id" title="variable">r</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#map"><span class="id" title="definition">map</span></a> <a class="idref" href="RC.roleToRole.html#role_evt_to_act_term"><span class="id" title="definition">role_evt_to_act_term</span></a> (<a class="idref" href="RC.roleToRole.html#trace"><span class="id" title="projection">trace</span></a> <a class="idref" href="RC.roleToRole.html#r:14"><span class="id" title="variable">r</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.roleToRole.html#actions_from_outputs"><span class="id" title="definition">actions_from_outputs</span></a> (<a class="idref" href="RC.roleToRole.html#outputs"><span class="id" title="projection">outputs</span></a> <a class="idref" href="RC.roleToRole.html#r:14"><span class="id" title="variable">r</span></a>) <br/>
+.<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

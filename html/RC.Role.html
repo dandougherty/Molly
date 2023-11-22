@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>RC.Role</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library RC.Role</h1>
+
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Bool.Bool.html#"><span class="id" title="library">Bool</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Arith.Arith.html#"><span class="id" title="library">Arith</span></a>.<br/>
+<span class="id" title="keyword">Export</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ListNotations"><span class="id" title="module">ListNotations</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">RC</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.CpdtTactics.html#"><span class="id" title="library">CpdtTactics</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#"><span class="id" title="library">Utilities</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#"><span class="id" title="library">ListUtil</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Decidability.html#"><span class="id" title="library">Decidability</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Sorts.html#"><span class="id" title="library">Sorts</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Act.html#"><span class="id" title="library">Act</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Term.html#"><span class="id" title="library">Term</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#"><span class="id" title="library">Subterms</span></a><br/>
+&nbsp;&nbsp;<br/>
+.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab90"></a><h1 class="section">Roles</h1>
+
+<div class="paragraph"> </div>
+
+ A Role is a list of Actions (inputs, outputs, sends and receives)
+    specified by Terms
+
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="Role" class="idref" href="#Role"><span class="id" title="definition">Role</span></a> :=  <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab91"></a><h1 class="section">Utilities</h1>
+
+<div class="paragraph"> </div>
+
+ Extract the Terms in an action 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="act_term_msg" class="idref" href="#act_term_msg"><span class="id" title="definition">act_term_msg</span></a> (<a id="e:1" class="idref" href="#e:1"><span class="id" title="binder">e</span></a>: <a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>): <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Role.html#e:1"><span class="id" title="variable">e</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Prm"><span class="id" title="constructor">Prm</span></a> <span class="id" title="var">x</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">x</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Ret"><span class="id" title="constructor">Ret</span></a> <span class="id" title="var">x</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">x</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Snd"><span class="id" title="constructor">Snd</span></a> <span class="id" title="var">x1</span> <span class="id" title="var">x2</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">[</span></a><span class="id" title="var">x1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">;</span></a> <span class="id" title="var">x2</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Rcv"><span class="id" title="constructor">Rcv</span></a> <span class="id" title="var">x1</span> <span class="id" title="var">x2</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">[</span></a><span class="id" title="var">x1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">;</span></a> <span class="id" title="var">x2</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+duplicates ok here 
+</div>
+<div class="code">
+<span class="id" title="keyword">Fixpoint</span> <a id="act_term_msgs" class="idref" href="#act_term_msgs"><span class="id" title="definition">act_term_msgs</span></a> (<a id="rl:3" class="idref" href="#rl:3"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>): <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Role.html#rl:3"><span class="id" title="variable">rl</span></a> <span class="id" title="keyword">with</span> <br/>
+&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a><br/>
+&nbsp;&nbsp;| <span class="id" title="var">a</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <a class="idref" href="RC.Role.html#act_term_msg"><span class="id" title="definition">act_term_msg</span></a> <span class="id" title="var">a</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="RC.Role.html#act_term_msgs:4"><span class="id" title="definition">act_term_msgs</span></a> <span class="id" title="var">rest</span><br/>
+&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Extract the Terms in a role 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="terms_of_role" class="idref" href="#terms_of_role"><span class="id" title="definition">terms_of_role</span></a> (<a id="rl:6" class="idref" href="#rl:6"><span class="id" title="binder">rl</span></a> : <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>): <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#nodup"><span class="id" title="definition">nodup</span></a> <a class="idref" href="RC.Term.html#Term_eq_dec"><span class="id" title="definition">Term_eq_dec</span></a> (<a class="idref" href="RC.Role.html#act_term_msgs"><span class="id" title="definition">act_term_msgs</span></a> <a class="idref" href="RC.Role.html#rl:6"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+This will be the "universe" of Terms during compilation 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="Subterms_of_role" class="idref" href="#Subterms_of_role"><span class="id" title="definition">Subterms_of_role</span></a> (<a id="rl:7" class="idref" href="#rl:7"><span class="id" title="binder">rl</span></a> : <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>): <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Subterms.html#Subterms"><span class="id" title="definition">Subterms</span></a> (<a class="idref" href="RC.Role.html#terms_of_role"><span class="id" title="definition">terms_of_role</span></a> <a class="idref" href="RC.Role.html#rl:7"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab92"></a><h2 class="section">The Qt terms of a Role</h2>
+
+<div class="paragraph"> </div>
+
+ need these for initialization 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="quote_terms_in_role" class="idref" href="#quote_terms_in_role"><span class="id" title="definition">quote_terms_in_role</span></a> (<a id="rl:8" class="idref" href="#rl:8"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) : <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#filter"><span class="id" title="definition">filter</span></a> <a class="idref" href="RC.Term.html#is_quote"><span class="id" title="definition">is_quote</span></a> (<a class="idref" href="RC.Role.html#Subterms_of_role"><span class="id" title="definition">Subterms_of_role</span></a> <a class="idref" href="RC.Role.html#rl:8"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab93"></a><h2 class="section">Positive-polarity Terms</h2>
+
+<div class="paragraph"> </div>
+
+ These are the elementary Terms that are constructed by the role.
+    That is, if the first occurrence of an elementary term in in a
+    send, it is counted here.
+
+<div class="paragraph"> </div>
+
+    We don't exclude outputs, although that would be anomalous in a
+    protocol.
+
+<div class="paragraph"> </div>
+
+   Positive polarity is not the same as originating since subterms of
+   keys are included in pos_pol.
+
+<div class="paragraph"> </div>
+
+    Implementation: a helper function accumulates all elementary terms
+    seen so far paired with those that are first seen in a send or
+    output.
+
+<div class="paragraph"> </div>
+
+    We don't bother about duplicates until later.  
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Fixpoint</span> <a id="pos_pol_helper" class="idref" href="#pos_pol_helper"><span class="id" title="definition">pos_pol_helper</span></a> (<a id="acc:9" class="idref" href="#acc:9"><span class="id" title="binder">acc</span></a>: <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#11c698c8685bb8ab1cf725545c085ac4"><span class="id" title="notation">×</span></a><a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a>) (<a id="evts:10" class="idref" href="#evts:10"><span class="id" title="binder">evts</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>)) <br/>
+&nbsp;&nbsp;:=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Role.html#evts:10"><span class="id" title="variable">evts</span></a> <span class="id" title="keyword">with</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> ⇒ <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a><br/>
+<br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Rcv"><span class="id" title="constructor">Rcv</span></a> <span class="id" title="var">c</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Role.html#pos_pol_helper:11"><span class="id" title="definition">pos_pol_helper</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Term.html#elems_of_terms"><span class="id" title="definition">Term.elems_of_terms</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">[</span></a><span class="id" title="var">c</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">;</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#fst"><span class="id" title="definition">fst</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#snd"><span class="id" title="definition">snd</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">rest</span><br/>
+<br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Prm"><span class="id" title="constructor">Prm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Role.html#pos_pol_helper:11"><span class="id" title="definition">pos_pol_helper</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Term.html#elems_of_terms"><span class="id" title="definition">Term.elems_of_terms</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#fst"><span class="id" title="definition">fst</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#snd"><span class="id" title="definition">snd</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">rest</span><br/>
+<br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Snd"><span class="id" title="constructor">Snd</span></a> <span class="id" title="var">c</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Role.html#pos_pol_helper:11"><span class="id" title="definition">pos_pol_helper</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Term.html#elems_of_terms"><span class="id" title="definition">Term.elems_of_terms</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#fst"><span class="id" title="definition">fst</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">[</span></a><span class="id" title="var">c</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">;</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#guarded_add"><span class="id" title="definition">ListUtil.guarded_add</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#fst"><span class="id" title="definition">fst</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a>) (<a class="idref" href="RC.Term.html#elems_of_terms"><span class="id" title="definition">Term.elems_of_terms</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>) (<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#snd"><span class="id" title="definition">snd</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">rest</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Ret"><span class="id" title="constructor">Ret</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Role.html#pos_pol_helper:11"><span class="id" title="definition">pos_pol_helper</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Term.html#elems_of_terms"><span class="id" title="definition">Term.elems_of_terms</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#fst"><span class="id" title="definition">fst</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#guarded_add"><span class="id" title="definition">ListUtil.guarded_add</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#fst"><span class="id" title="definition">fst</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a>) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Term.html#elems_of_terms"><span class="id" title="definition">Term.elems_of_terms</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#snd"><span class="id" title="definition">snd</span></a> <a class="idref" href="RC.Role.html#acc:9"><span class="id" title="variable">acc</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">rest</span><br/>
+<br/>
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Be careful to exclude inputs.
+    We remove dups here 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a id="pos_pol_in_role" class="idref" href="#pos_pol_in_role"><span class="id" title="definition">pos_pol_in_role</span></a> (<a id="rl:13" class="idref" href="#rl:13"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) : <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#nodup"><span class="id" title="definition">nodup</span></a> <a class="idref" href="RC.Term.html#Term_eq_dec"><span class="id" title="definition">Term_eq_dec</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#snd"><span class="id" title="definition">snd</span></a> (<a class="idref" href="RC.Role.html#pos_pol_helper"><span class="id" title="definition">pos_pol_helper</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> <a class="idref" href="RC.Role.html#rl:13"><span class="id" title="variable">rl</span></a>)).<br/>
+
+<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>

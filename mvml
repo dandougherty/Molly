@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# move ml code into a directory named ml_code
+
+mv *.ml ml_code;
+mv *.mli ml_code
+

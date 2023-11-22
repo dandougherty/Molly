@@ -1,0 +1,727 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<title>RC.Compile</title>
+</head>
+
+<body>
+
+<div id="page">
+
+<div id="header">
+</div>
+
+<div id="main">
+
+<h1 class="libtitle">Library RC.Compile</h1>
+
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">Coq</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a> <br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Logic.Classical_Prop.html#"><span class="id" title="library">Classical_Prop</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Arith.Arith.html#"><span class="id" title="library">Arith.Arith</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Bool.Bool.html#"><span class="id" title="library">Bool.Bool</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">Strings.String</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Logic.FunctionalExtensionality.html#"><span class="id" title="library">Logic.FunctionalExtensionality</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.micromega.Lia.html#"><span class="id" title="library">Lia</span></a><br/>
+.<br/>
+<span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ListNotations"><span class="id" title="module">ListNotations</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="keyword">Equations</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Export</span> <span class="id" title="library">Equations</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">From</span> <span class="id" title="var">RC</span> <span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <br/>
+&nbsp;&nbsp;<a class="idref" href="RC.CpdtTactics.html#"><span class="id" title="library">CpdtTactics</span></a> <a class="idref" href="RC.TacticsMatch.html#"><span class="id" title="library">TacticsMatch</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#"><span class="id" title="library">Utilities</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Decidability.html#"><span class="id" title="library">Decidability</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#"><span class="id" title="library">ListUtil</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Iteration.html#"><span class="id" title="library">Iteration</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Act.html#"><span class="id" title="library">Act</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Sorts.html#"><span class="id" title="library">Sorts</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Term.html#"><span class="id" title="library">Term</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Role.html#"><span class="id" title="library">Role</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#"><span class="id" title="library">Proc</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.SaturationRules.html#"><span class="id" title="library">SaturationRules</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.SaturationLoop.html#"><span class="id" title="library">SaturationLoop</span></a><br/>
+&nbsp;&nbsp;<a class="idref" href="RC.roleToRole.html#"><span class="id" title="library">roleToRole</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Unset Implicit Arguments</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Section</span> <a id="Compiling" class="idref" href="#Compiling"><span class="id" title="section">Compiling</span></a>.<br/>
+</div>
+
+<div class="doc">
+The role is fixed throughout the compilation, so make a
+  Section-global variable 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Variable</span> <a id="Compiling.rl" class="idref" href="#Compiling.rl"><span class="id" title="variable">rl</span></a> : <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Let</span> <a id="Compiling.unv" class="idref" href="#Compiling.unv"><span class="id" title="variable">unv</span></a> := (<a class="idref" href="RC.Role.html#Subterms_of_role"><span class="id" title="definition">Subterms_of_role</span></a> <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab154"></a><h1 class="section">States</h1>
+
+</div>
+<div class="code">
+
+<br/>
+</div>
+
+<div class="doc">
+Think of the role as cleaved into tr_done and tr_todo
+by a cursor 
+</div>
+<div class="code">
+&nbsp;&nbsp;<span class="id" title="keyword">Record</span> <a id="state" class="idref" href="#state"><span class="id" title="record">state</span></a> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">mkState</span> {<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="tr_done" class="idref" href="#tr_done"><span class="id" title="projection">tr_done</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="tr_todo" class="idref" href="#tr_todo"><span class="id" title="projection">tr_todo</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>);<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id="the_pr" class="idref" href="#the_pr"><span class="id" title="projection">the_pr</span></a>: <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> ;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}.<br/>
+
+<br/>
+&nbsp;&nbsp;#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Instance</span> <a id="eqDecision_state" class="idref" href="#eqDecision_state"><span class="id" title="instance">eqDecision_state</span></a> : <a class="idref" href="RC.Decidability.html#EqDecision"><span class="id" title="class">EqDecision</span></a> <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span> <span class="id" title="var">y</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">solve_decision</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Utilities.html#eqDecision_optionE"><span class="id" title="instance">eqDecision_optionE</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Act.html#eqDecision_acts"><span class="id" title="instance">eqDecision_acts</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">_</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Act.html#eqDecision_acts"><span class="id" title="instance">eqDecision_acts</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">_</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Defined</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="measure" class="idref" href="#measure"><span class="id" title="definition">measure</span></a> (<a id="st:6" class="idref" href="#st:6"><span class="id" title="binder">st</span></a> : <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#length"><span class="id" title="abbreviation">length</span></a> (<a class="idref" href="RC.Compile.html#tr_todo"><span class="id" title="projection">tr_todo</span></a> <a class="idref" href="RC.Compile.html#st:6"><span class="id" title="variable">st</span></a>).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Arguments</span> <a class="idref" href="RC.Compile.html#measure"><span class="id" title="definition">measure</span></a> /.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab155"></a><h2 class="section">Invariants</h2>
+
+</div>
+<div class="code">
+
+<br/>
+</div>
+
+<div class="doc">
+tr_done and tr_todo partition the act_trace of rl 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="cursor" class="idref" href="#cursor"><span class="id" title="definition">cursor</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="st:7" class="idref" href="#st:7"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) : <span class="id" title="keyword">Prop</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:= <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#tr_done"><span class="id" title="projection">tr_done</span></a> <a class="idref" href="RC.Compile.html#st:7"><span class="id" title="variable">st</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#tr_todo"><span class="id" title="projection">tr_todo</span></a> <a class="idref" href="RC.Compile.html#st:7"><span class="id" title="variable">st</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>.<br/>
+&nbsp;&nbsp;#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Instance</span> <a id="cursor_dec" class="idref" href="#cursor_dec"><span class="id" title="instance">cursor_dec</span></a> : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<a id="st:8" class="idref" href="#st:8"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Decidability.html#Decision"><span class="id" title="class">Decision</span></a> (<a class="idref" href="RC.Compile.html#cursor"><span class="id" title="definition">cursor</span></a> <a class="idref" href="RC.Compile.html#st:8"><span class="id" title="variable">st</span></a>)).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>. <span class="id" title="tactic">intros</span> <span class="id" title="var">st</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Compile.html#cursor"><span class="id" title="definition">cursor</span></a>; <span class="id" title="var">solve_decision</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Act.html#eqDecision_act"><span class="id" title="instance">eqDecision_act</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">_</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Defined</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Lift into optionE 
+<div class="paragraph"> </div>
+
+ The tr_done events line up with the prtrace of pr, via the
+   cstore, ie the relation tdecl_bound 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="done_related" class="idref" href="#done_related"><span class="id" title="definition">done_related</span></a> (<a id="st:9" class="idref" href="#st:9"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) : <span class="id" title="keyword">Prop</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;:= <span class="id" title="keyword">match</span> (<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> <a class="idref" href="RC.Compile.html#st:9"><span class="id" title="variable">st</span></a>) <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">pr</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.ListUtil.html#List_mapR"><span class="id" title="inductive">List_mapR</span></a> (<a class="idref" href="RC.Act.html#Act_mapR"><span class="id" title="inductive">Act_mapR</span></a> (<a class="idref" href="RC.Proc.html#tdecl_bound"><span class="id" title="definition">tdecl_bound</span></a> <span class="id" title="var">pr</span>) )<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Compile.html#tr_done"><span class="id" title="projection">tr_done</span></a> <a class="idref" href="RC.Compile.html#st:9"><span class="id" title="variable">st</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> <span class="id" title="var">pr</span>) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Arguments</span> <a class="idref" href="RC.Compile.html#done_related"><span class="id" title="definition">done_related</span></a> /.<br/>
+&nbsp;&nbsp;#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Instance</span> <a id="done_related_dec" class="idref" href="#done_related_dec"><span class="id" title="instance">done_related_dec</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<a id="st:10" class="idref" href="#st:10"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>), <a class="idref" href="RC.Decidability.html#Decision"><span class="id" title="class">Decision</span></a> (<a class="idref" href="RC.Compile.html#done_related"><span class="id" title="definition">done_related</span></a> <a class="idref" href="RC.Compile.html#st:10"><span class="id" title="variable">st</span></a>).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Decidability.html#Decision"><span class="id" title="class">Decision</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">st</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Compile.html#done_related"><span class="id" title="definition">done_related</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> (<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> <span class="id" title="var">st</span>) <span class="id" title="var">eqn</span>:<span class="id" title="var">e</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="RC.ListUtil.html#List_mapR_dec"><span class="id" title="instance">List_mapR_dec</span></a>. <span class="id" title="tactic">apply</span> <span class="id" title="var">_</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Decidability.html#True_dec"><span class="id" title="instance">True_dec</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Defined</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="state_saturated" class="idref" href="#state_saturated"><span class="id" title="definition">state_saturated</span></a> (<a id="st:11" class="idref" href="#st:11"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> (<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> <a class="idref" href="RC.Compile.html#st:11"><span class="id" title="variable">st</span></a>) <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">_</span> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">pr</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.SaturationLoop.html#saturated_pr"><span class="id" title="definition">saturated_pr</span></a> <a class="idref" href="RC.Compile.html#Compiling.unv"><span class="id" title="variable">unv</span></a> <span class="id" title="var">pr</span>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+&nbsp;&nbsp;#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Instance</span> <a id="state_saturated_dec" class="idref" href="#state_saturated_dec"><span class="id" title="instance">state_saturated_dec</span></a> : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<a id="st:12" class="idref" href="#st:12"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Decidability.html#Decision"><span class="id" title="class">Decision</span></a> (<a class="idref" href="RC.Compile.html#state_saturated"><span class="id" title="definition">state_saturated</span></a> <a class="idref" href="RC.Compile.html#st:12"><span class="id" title="variable">st</span></a>)).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">st</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Compile.html#state_saturated"><span class="id" title="definition">state_saturated</span></a> .<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> (<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> <span class="id" title="var">st</span>) <span class="id" title="var">eqn</span>:<span class="id" title="var">e</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <span class="id" title="var">_</span> .<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="RC.Decidability.html#True_dec"><span class="id" title="instance">True_dec</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Defined</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="invariant" class="idref" href="#invariant"><span class="id" title="definition">invariant</span></a> (<a id="st:13" class="idref" href="#st:13"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) :=  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Compile.html#state_saturated"><span class="id" title="definition">state_saturated</span></a> <a class="idref" href="RC.Compile.html#st:13"><span class="id" title="variable">st</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="RC.Compile.html#cursor"><span class="id" title="definition">cursor</span></a> <a class="idref" href="RC.Compile.html#st:13"><span class="id" title="variable">st</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="RC.Compile.html#done_related"><span class="id" title="definition">done_related</span></a>  <a class="idref" href="RC.Compile.html#st:13"><span class="id" title="variable">st</span></a>).<br/>
+&nbsp;&nbsp;#[<span class="id" title="var">export</span>] <span class="id" title="keyword">Instance</span> <a id="invariant_dec" class="idref" href="#invariant_dec"><span class="id" title="instance">invariant_dec</span></a> : <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">∀</span> (<a id="st:14" class="idref" href="#st:14"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>),<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Decidability.html#Decision"><span class="id" title="class">Decision</span></a> (<a class="idref" href="RC.Compile.html#invariant"><span class="id" title="definition">invariant</span></a> <a class="idref" href="RC.Compile.html#st:14"><span class="id" title="variable">st</span></a>)).<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>; <span class="id" title="tactic">apply</span> <span class="id" title="var">_</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Defined</span>.<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab156"></a><h2 class="section">Initialization</h2>
+
+</div>
+<div class="code">
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab157"></a><h3 class="section">Make bindings for originating terms</h3>
+
+<div class="paragraph"> </div>
+
+ Extend a pr by genr binding(s) for <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a></span>
+
+<div class="paragraph"> </div>
+
+     This doesn't do any sanity-checking on the term: if passed a
+     non-elementary it will dutifully make a Genr binding even though
+     that would be stupid 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Equations</span> <a id="extend_proc_by_gen" class="idref" href="#extend_proc_by_gen"><span class="id" title="definition">extend_proc_by_gen</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:15" class="idref" href="#pr:15"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="t:16" class="idref" href="#t:16"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>)  : <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_gen:20"><span class="id" title="definition">extend_proc_by_gen</span></a> <a class="idref" href="RC.Compile.html#pr:18"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#t:19"><span class="id" title="variable">t</span></a> :=      <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">t</span> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Term.html#Ik"><span class="id" title="constructor">Ik</span></a> <span class="id" title="var">k</span> ⇒  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> (<a id="lpri:22" class="idref" href="#lpri:22"><span class="id" title="binder">lpri</span></a>, <a id="lpub:23" class="idref" href="#lpub:23"><span class="id" title="binder">lpub</span></a>) := <a class="idref" href="RC.Proc.html#two_fresh_locs"><span class="id" title="definition">two_fresh_locs</span></a> <span class="id" title="var">pr</span> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">pr</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="RC.Compile.html#lpri:22"><span class="id" title="variable">lpri</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> (<a class="idref" href="RC.Proc.html#Genr"><span class="id" title="constructor">Genr</span></a> (<a class="idref" href="RC.Proc.html#fresh_gen_index"><span class="id" title="definition">fresh_gen_index</span></a> <span class="id" title="var">pr</span>) (<a class="idref" href="RC.Term.html#sort_of"><span class="id" title="definition">sort_of</span></a> <span class="id" title="var">t</span>)) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">;</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">((</span></a><a class="idref" href="RC.Term.html#Ak"><span class="id" title="constructor">Ak</span></a> <span class="id" title="var">k</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">),</span></a> <a class="idref" href="RC.Compile.html#lpub:23"><span class="id" title="variable">lpub</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> (<a class="idref" href="RC.Proc.html#PubOf"><span class="id" title="constructor">PubOf</span></a> <a class="idref" href="RC.Compile.html#lpri:22"><span class="id" title="variable">lpri</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#e76c6291366b599375c28eba0aae94bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> ⇒ <span class="id" title="var">pr</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a> <a class="idref" href="RC.Proc.html#fresh_loc"><span class="id" title="definition">fresh_loc</span></a> <span class="id" title="var">pr</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> (<a class="idref" href="RC.Proc.html#Genr"><span class="id" title="constructor">Genr</span></a> (<a class="idref" href="RC.Proc.html#fresh_gen_index"><span class="id" title="definition">fresh_gen_index</span></a> <span class="id" title="var">pr</span>) (<a class="idref" href="RC.Term.html#sort_of"><span class="id" title="definition">sort_of</span></a> <span class="id" title="var">t</span>))<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+extend pr by genr bindings for the terms in <span class="inlinecode"><span class="id" title="var">ts</span></span> 
+</div>
+<div class="code">
+&nbsp;&nbsp;<span class="id" title="keyword">Equations</span> <a id="extend_proc_by_gens" class="idref" href="#extend_proc_by_gens"><span class="id" title="definition">extend_proc_by_gens</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:24" class="idref" href="#pr:24"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="ts:25" class="idref" href="#ts:25"><span class="id" title="binder">ts</span></a>: <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a>)  : <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_gens:28"><span class="id" title="definition">extend_proc_by_gens</span></a> <a class="idref" href="RC.Compile.html#pr:27"><span class="id" title="variable">pr</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> := <span class="id" title="var">pr</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_gens:32"><span class="id" title="definition">extend_proc_by_gens</span></a> <a class="idref" href="RC.Compile.html#pr:29"><span class="id" title="variable">pr</span></a> (<a class="idref" href="RC.Compile.html#t:31"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a><a class="idref" href="RC.Compile.html#rest:30"><span class="id" title="variable">rest</span></a>) := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_gens:26"><span class="id" title="definition">extend_proc_by_gens</span></a> (<a class="idref" href="RC.Compile.html#extend_proc_by_gen"><span class="id" title="definition">extend_proc_by_gen</span></a> <span class="id" title="var">pr</span> <span class="id" title="var">t</span>) <span class="id" title="var">rest</span> .<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The sequence of Genr bindings we make for the role 
+<div class="paragraph"> </div>
+
+ We need a utility to filter out from trms any (Ak k) such (Ik k)
+  is present in ctxt 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Fixpoint</span> <a id="exclude_pubs_helper" class="idref" href="#exclude_pubs_helper"><span class="id" title="definition">exclude_pubs_helper</span></a> (<a id="ctxt:33" class="idref" href="#ctxt:33"><span class="id" title="binder">ctxt</span></a> <a id="trms:34" class="idref" href="#trms:34"><span class="id" title="binder">trms</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Compile.html#trms:34"><span class="id" title="variable">trms</span></a> <span class="id" title="keyword">with</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> ⇒ <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Term.html#Ak"><span class="id" title="constructor">Ak</span></a> <span class="id" title="var">k</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <span class="id" title="keyword">if</span> <a class="idref" href="RC.ListUtil.html#inb"><span class="id" title="definition">inb</span></a> (<a class="idref" href="RC.Term.html#Ik"><span class="id" title="constructor">Ik</span></a> <span class="id" title="var">k</span>) <a class="idref" href="RC.Compile.html#ctxt:33"><span class="id" title="variable">ctxt</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">then</span> <a class="idref" href="RC.Compile.html#exclude_pubs_helper:35"><span class="id" title="definition">exclude_pubs_helper</span></a> <a class="idref" href="RC.Compile.html#ctxt:33"><span class="id" title="variable">ctxt</span></a> <span class="id" title="var">rest</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">else</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Term.html#Ak"><span class="id" title="constructor">Ak</span></a> <span class="id" title="var">k</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="RC.Compile.html#exclude_pubs_helper:35"><span class="id" title="definition">exclude_pubs_helper</span></a> <a class="idref" href="RC.Compile.html#ctxt:33"><span class="id" title="variable">ctxt</span></a> <span class="id" title="var">rest</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <span class="id" title="var">rest</span> ⇒ <span class="id" title="var">t</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a> <a class="idref" href="RC.Compile.html#exclude_pubs_helper:35"><span class="id" title="definition">exclude_pubs_helper</span></a> <a class="idref" href="RC.Compile.html#ctxt:33"><span class="id" title="variable">ctxt</span></a> <span class="id" title="var">rest</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Filter out from trms any (Ak k) such (Ik k) is present in trms 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="exclude_pubs" class="idref" href="#exclude_pubs"><span class="id" title="definition">exclude_pubs</span></a> (<a id="trms:37" class="idref" href="#trms:37"><span class="id" title="binder">trms</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a> := <a class="idref" href="RC.Compile.html#exclude_pubs_helper"><span class="id" title="definition">exclude_pubs_helper</span></a> <a class="idref" href="RC.Compile.html#trms:37"><span class="id" title="variable">trms</span></a> <a class="idref" href="RC.Compile.html#trms:37"><span class="id" title="variable">trms</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Equations</span> <a id="initial_gen_bindings" class="idref" href="#initial_gen_bindings"><span class="id" title="definition">initial_gen_bindings</span></a> (<a id="rl:38" class="idref" href="#rl:38"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>):  <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#initial_gen_bindings:41"><span class="id" title="definition">initial_gen_bindings</span></a> <a class="idref" href="RC.Compile.html#rl:40"><span class="id" title="variable">rl</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_gens"><span class="id" title="definition">extend_proc_by_gens</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> (<a class="idref" href="RC.Compile.html#exclude_pubs"><span class="id" title="definition">exclude_pubs</span></a> (<a class="idref" href="RC.Role.html#pos_pol_in_role"><span class="id" title="definition">pos_pol_in_role</span></a> <span class="id" title="var">rl</span>)) .<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="extend_by_gen_no_new_trace" class="idref" href="#extend_by_gen_no_new_trace"><span class="id" title="lemma">extend_by_gen_no_new_trace</span></a> <a id="pr:42" class="idref" href="#pr:42"><span class="id" title="binder">pr</span></a> <a id="t:43" class="idref" href="#t:43"><span class="id" title="binder">t</span></a>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#extend_proc_by_gen"><span class="id" title="definition">extend_proc_by_gen</span></a> <a class="idref" href="RC.Compile.html#pr:42"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#t:43"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> <a class="idref" href="RC.Compile.html#pr:42"><span class="id" title="variable">pr</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Compile.html#FunctionalElimination_extend_proc_by_gen"><span class="id" title="instance">FunctionalElimination_extend_proc_by_gen</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_all_matches</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <a class="idref" href="RC.Proc.html#prtrace_app"><span class="id" title="lemma">prtrace_app</span></a>;    <span class="id" title="tactic">simpl</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">rewrite</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#app_nil_r"><span class="id" title="lemma">app_nil_r</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="extend_by_gens_no_new_trace" class="idref" href="#extend_by_gens_no_new_trace"><span class="id" title="lemma">extend_by_gens_no_new_trace</span></a> <a id="pr:44" class="idref" href="#pr:44"><span class="id" title="binder">pr</span></a> <a id="ts:45" class="idref" href="#ts:45"><span class="id" title="binder">ts</span></a>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#extend_proc_by_gens"><span class="id" title="definition">extend_proc_by_gens</span></a> <a class="idref" href="RC.Compile.html#pr:44"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#ts:45"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> <a class="idref" href="RC.Compile.html#pr:44"><span class="id" title="variable">pr</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Compile.html#FunctionalElimination_extend_proc_by_gens"><span class="id" title="instance">FunctionalElimination_extend_proc_by_gens</span></a> ).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>; <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Compile.html#extend_by_gen_no_new_trace"><span class="id" title="lemma">extend_by_gen_no_new_trace</span></a> <span class="id" title="var">pr0</span> <span class="id" title="var">t</span>) .<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="initial_gen_no_trace" class="idref" href="#initial_gen_no_trace"><span class="id" title="lemma">initial_gen_no_trace</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#initial_gen_bindings"><span class="id" title="definition">initial_gen_bindings</span></a> <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> .<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">simp</span> <span class="id" title="var">initial_gen_bindings</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Compile.html#extend_by_gens_no_new_trace"><span class="id" title="lemma">extend_by_gens_no_new_trace</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab158"></a><h3 class="section">Make bindings for Qt terms</h3>
+
+<div class="paragraph"> </div>
+
+ Extend a pr by a binding(s) for a Qt term 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Equations</span> <a id="extend_proc_by_qt" class="idref" href="#extend_proc_by_qt"><span class="id" title="definition">extend_proc_by_qt</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:46" class="idref" href="#pr:46"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="t:47" class="idref" href="#t:47"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_qt:51"><span class="id" title="definition">extend_proc_by_qt</span></a> <a class="idref" href="RC.Compile.html#pr:49"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#t:50"><span class="id" title="variable">t</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <span class="id" title="var">t</span> <span class="id" title="keyword">with</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Term.html#Qt"><span class="id" title="constructor">Qt</span></a> <span class="id" title="var">s</span>) ⇒ <span class="id" title="keyword">let</span> <a id="l:53" class="idref" href="#l:53"><span class="id" title="binder">l</span></a> := <a class="idref" href="RC.Proc.html#fresh_loc"><span class="id" title="definition">fresh_loc</span></a> <span class="id" title="var">pr</span> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">pr</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><span class="id" title="var">t</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a><a class="idref" href="RC.Compile.html#l:53"><span class="id" title="variable">l</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> (<a class="idref" href="RC.Proc.html#Quote"><span class="id" title="constructor">Quote</span></a> <span class="id" title="var">s</span>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <span class="id" title="var">_</span> ⇒ <span class="id" title="var">pr</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+extend pr by bindings for the terms in <span class="inlinecode"><span class="id" title="var">ts</span></span>, presumably all Qt
+  terms 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Equations</span> <a id="extend_proc_by_qts" class="idref" href="#extend_proc_by_qts"><span class="id" title="definition">extend_proc_by_qts</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:54" class="idref" href="#pr:54"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="ts:55" class="idref" href="#ts:55"><span class="id" title="binder">ts</span></a>: <a class="idref" href="RC.Term.html#Terms"><span class="id" title="abbreviation">Terms</span></a>)  : <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_qts:58"><span class="id" title="definition">extend_proc_by_qts</span></a> <a class="idref" href="RC.Compile.html#pr:57"><span class="id" title="variable">pr</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> := <span class="id" title="var">pr</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_qts:62"><span class="id" title="definition">extend_proc_by_qts</span></a> <a class="idref" href="RC.Compile.html#pr:59"><span class="id" title="variable">pr</span></a> (<a class="idref" href="RC.Compile.html#t:61"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a><a class="idref" href="RC.Compile.html#rest:60"><span class="id" title="variable">rest</span></a>) := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_qts:56"><span class="id" title="definition">extend_proc_by_qts</span></a> (<a class="idref" href="RC.Compile.html#extend_proc_by_qt"><span class="id" title="definition">extend_proc_by_qt</span></a> <span class="id" title="var">pr</span> <span class="id" title="var">t</span>) <span class="id" title="var">rest</span> .<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Equations</span> <a id="initial_qt_bindings" class="idref" href="#initial_qt_bindings"><span class="id" title="definition">initial_qt_bindings</span></a> (<a id="rl:63" class="idref" href="#rl:63"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>): <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#initial_qt_bindings:66"><span class="id" title="definition">initial_qt_bindings</span></a> <a class="idref" href="RC.Compile.html#rl:65"><span class="id" title="variable">rl</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#extend_proc_by_qts"><span class="id" title="definition">extend_proc_by_qts</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> (<a class="idref" href="RC.Role.html#quote_terms_in_role"><span class="id" title="definition">quote_terms_in_role</span></a> <span class="id" title="var">rl</span>).<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="extend_by_qt_no_new_trace" class="idref" href="#extend_by_qt_no_new_trace"><span class="id" title="lemma">extend_by_qt_no_new_trace</span></a> <a id="pr:67" class="idref" href="#pr:67"><span class="id" title="binder">pr</span></a> <a id="t:68" class="idref" href="#t:68"><span class="id" title="binder">t</span></a>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#extend_proc_by_qt"><span class="id" title="definition">extend_proc_by_qt</span></a> <a class="idref" href="RC.Compile.html#pr:67"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#t:68"><span class="id" title="variable">t</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> <a class="idref" href="RC.Compile.html#pr:67"><span class="id" title="variable">pr</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Compile.html#FunctionalElimination_extend_proc_by_qt"><span class="id" title="instance">FunctionalElimination_extend_proc_by_qt</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">destruct_all_matches</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <a class="idref" href="RC.Proc.html#prtrace_app"><span class="id" title="lemma">prtrace_app</span></a>;    <span class="id" title="tactic">simpl</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">rewrite</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#app_nil_r"><span class="id" title="lemma">app_nil_r</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="extend_by_qts_no_new_trace" class="idref" href="#extend_by_qts_no_new_trace"><span class="id" title="lemma">extend_by_qts_no_new_trace</span></a> <a id="pr:69" class="idref" href="#pr:69"><span class="id" title="binder">pr</span></a> <a id="ts:70" class="idref" href="#ts:70"><span class="id" title="binder">ts</span></a>:<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#extend_proc_by_qts"><span class="id" title="definition">extend_proc_by_qts</span></a> <a class="idref" href="RC.Compile.html#pr:69"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#ts:70"><span class="id" title="variable">ts</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> <a class="idref" href="RC.Compile.html#pr:69"><span class="id" title="variable">pr</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Compile.html#FunctionalElimination_extend_proc_by_qts"><span class="id" title="instance">FunctionalElimination_extend_proc_by_qts</span></a> ).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>; <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<a class="idref" href="RC.Compile.html#extend_by_qt_no_new_trace"><span class="id" title="lemma">extend_by_qt_no_new_trace</span></a> <span class="id" title="var">pr0</span> <span class="id" title="var">t</span>) .<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="initial_qt_no_trace" class="idref" href="#initial_qt_no_trace"><span class="id" title="lemma">initial_qt_no_trace</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#initial_qt_bindings"><span class="id" title="definition">initial_qt_bindings</span></a> <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> .<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">simp</span> <span class="id" title="var">initial_qt_bindings</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="RC.Compile.html#extend_by_qts_no_new_trace"><span class="id" title="lemma">extend_by_qts_no_new_trace</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="initial_bindings" class="idref" href="#initial_bindings"><span class="id" title="definition">initial_bindings</span></a> (<a id="rl:71" class="idref" href="#rl:71"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) : <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#initial_gen_bindings"><span class="id" title="definition">initial_gen_bindings</span></a> <a class="idref" href="RC.Compile.html#rl:71"><span class="id" title="variable">rl</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a>  <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#initial_qt_bindings"><span class="id" title="definition">initial_qt_bindings</span></a> <a class="idref" href="RC.Compile.html#rl:71"><span class="id" title="variable">rl</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> .<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="initialize" class="idref" href="#initialize"><span class="id" title="definition">initialize</span></a> : <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a> := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{| <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#tr_done"><span class="id" title="projection">tr_done</span></a> := <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> ;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#tr_todo"><span class="id" title="projection">tr_todo</span></a> := <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> := <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.SaturationLoop.html#saturate"><span class="id" title="definition">saturate</span></a> <a class="idref" href="RC.Compile.html#Compiling.unv"><span class="id" title="variable">unv</span></a> (<a class="idref" href="RC.Compile.html#initial_bindings"><span class="id" title="definition">initial_bindings</span></a> <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;|}.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Lemma</span> <a id="initial_no_trace" class="idref" href="#initial_no_trace"><span class="id" title="lemma">initial_no_trace</span></a> :<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Proc.html#prtrace"><span class="id" title="definition">prtrace</span></a> (<a class="idref" href="RC.Compile.html#initial_bindings"><span class="id" title="definition">initial_bindings</span></a> <a class="idref" href="RC.Compile.html#Compiling.rl"><span class="id" title="variable">rl</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> .<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Compile.html#initial_bindings"><span class="id" title="definition">initial_bindings</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <a class="idref" href="RC.Proc.html#prtrace_app"><span class="id" title="lemma">prtrace_app</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <a class="idref" href="RC.Compile.html#initial_gen_no_trace"><span class="id" title="lemma">initial_gen_no_trace</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">now</span> <span class="id" title="tactic">rewrite</span> <a class="idref" href="RC.Compile.html#initial_qt_no_trace"><span class="id" title="lemma">initial_qt_no_trace</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a id="lab159"></a><h1 class="section">Processing Role Events</h1>
+
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="output_msg" class="idref" href="#output_msg"><span class="id" title="definition">output_msg</span></a> (<a id="t:72" class="idref" href="#t:72"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Proc.html#Stmt"><span class="id" title="inductive">Stmt</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Comm"><span class="id" title="constructor">Comm</span></a> ("output " <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> <a class="idref" href="RC.Compile.html#t:72"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">)</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="input_msg" class="idref" href="#input_msg"><span class="id" title="definition">input_msg</span></a> (<a id="t:73" class="idref" href="#t:73"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Proc.html#Stmt"><span class="id" title="inductive">Stmt</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Comm"><span class="id" title="constructor">Comm</span></a> ("input "<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> <a class="idref" href="RC.Compile.html#t:73"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">)</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="send_msg" class="idref" href="#send_msg"><span class="id" title="definition">send_msg</span></a> (<a id="ch:74" class="idref" href="#ch:74"><span class="id" title="binder">ch</span></a> <a id="t:75" class="idref" href="#t:75"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Proc.html#Stmt"><span class="id" title="inductive">Stmt</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Comm"><span class="id" title="constructor">Comm</span></a> ("sending "<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> <a class="idref" href="RC.Compile.html#t:75"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> " on " <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> <a class="idref" href="RC.Compile.html#ch:74"><span class="id" title="variable">ch</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">)</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="recv_msg" class="idref" href="#recv_msg"><span class="id" title="definition">recv_msg</span></a> (<a id="ch:76" class="idref" href="#ch:76"><span class="id" title="binder">ch</span></a> <a id="t:77" class="idref" href="#t:77"><span class="id" title="binder">t</span></a>: <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="RC.Proc.html#Stmt"><span class="id" title="inductive">Stmt</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Comm"><span class="id" title="constructor">Comm</span></a> ("receiving "<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> <a class="idref" href="RC.Compile.html#t:77"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> " on " <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Utilities.html#show"><span class="id" title="method">show</span></a> <a class="idref" href="RC.Compile.html#ch:76"><span class="id" title="variable">ch</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#169ad156fbc6036a53a0338819a2b301"><span class="id" title="notation">)</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+We do not actually need to saturate at the end of Snd and Ret.
+But it is really tedious to prove that we are still saturated after
+adding the Evnt statements.
+
+<div class="paragraph"> </div>
+
+So we call saturate so that we can easily establish that saturation is
+invariant.
+
+<div class="paragraph"> </div>
+
+ And the saturation code will only amount to a check for being
+saturated at the first step, so the price is small.  
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="handle_Ret" class="idref" href="#handle_Ret"><span class="id" title="definition">handle_Ret</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:78" class="idref" href="#pr:78"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="t:79" class="idref" href="#t:79"><span class="id" title="binder">t</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Proc.html#first_loc_for"><span class="id" title="definition">first_loc_for</span></a> <a class="idref" href="RC.Compile.html#pr:78"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#t:79"><span class="id" title="variable">t</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span> ⇒ <a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">tloc</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr1:80" class="idref" href="#pr1:80"><span class="id" title="binder">pr1</span></a> := <a class="idref" href="RC.Compile.html#pr:78"><span class="id" title="variable">pr</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr2:81" class="idref" href="#pr2:81"><span class="id" title="binder">pr2</span></a> := <a class="idref" href="RC.Compile.html#pr1:80"><span class="id" title="variable">pr1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Evnt"><span class="id" title="constructor">Evnt</span></a> (<a class="idref" href="RC.Act.html#Ret"><span class="id" title="constructor">Ret</span></a> <span class="id" title="var">tloc</span>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.SaturationLoop.html#saturate"><span class="id" title="definition">saturate</span></a> <a class="idref" href="RC.Compile.html#Compiling.unv"><span class="id" title="variable">unv</span></a> <a class="idref" href="RC.Compile.html#pr2:81"><span class="id" title="variable">pr2</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span> .<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="handle_Snd" class="idref" href="#handle_Snd"><span class="id" title="definition">handle_Snd</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:82" class="idref" href="#pr:82"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="ch:83" class="idref" href="#ch:83"><span class="id" title="binder">ch</span></a> <a id="t:84" class="idref" href="#t:84"><span class="id" title="binder">t</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Proc.html#first_loc_for"><span class="id" title="definition">first_loc_for</span></a> <a class="idref" href="RC.Compile.html#pr:82"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#ch:83"><span class="id" title="variable">ch</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span> ⇒ <a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a>  <span class="id" title="var">s</span>  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">chloc</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Proc.html#first_loc_for"><span class="id" title="definition">first_loc_for</span></a> <a class="idref" href="RC.Compile.html#pr:82"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#t:84"><span class="id" title="variable">t</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span> ⇒ <a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span>  <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">tloc</span> ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr1:85" class="idref" href="#pr1:85"><span class="id" title="binder">pr1</span></a> := <a class="idref" href="RC.Compile.html#pr:82"><span class="id" title="variable">pr</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr2:86" class="idref" href="#pr2:86"><span class="id" title="binder">pr2</span></a> := (<a class="idref" href="RC.Compile.html#pr1:85"><span class="id" title="variable">pr1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Evnt"><span class="id" title="constructor">Evnt</span></a> (<a class="idref" href="RC.Act.html#Snd"><span class="id" title="constructor">Snd</span></a> <span class="id" title="var">chloc</span> <span class="id" title="var">tloc</span>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> ) <span class="id" title="tactic">in</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.SaturationLoop.html#saturate"><span class="id" title="definition">saturate</span></a> <a class="idref" href="RC.Compile.html#Compiling.unv"><span class="id" title="variable">unv</span></a> <a class="idref" href="RC.Compile.html#pr2:86"><span class="id" title="variable">pr2</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="handle_Prm" class="idref" href="#handle_Prm"><span class="id" title="definition">handle_Prm</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:87" class="idref" href="#pr:87"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="t:88" class="idref" href="#t:88"><span class="id" title="binder">t</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="newl:89" class="idref" href="#newl:89"><span class="id" title="binder">newl</span></a> := <a class="idref" href="RC.Proc.html#fresh_loc"><span class="id" title="definition">fresh_loc</span></a> <a class="idref" href="RC.Compile.html#pr:87"><span class="id" title="variable">pr</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="input_ind:90" class="idref" href="#input_ind:90"><span class="id" title="binder">input_ind</span></a> := <a class="idref" href="RC.Proc.html#fresh_input_index"><span class="id" title="definition">fresh_input_index</span></a> <a class="idref" href="RC.Compile.html#pr:87"><span class="id" title="variable">pr</span></a>  <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="input_exp:91" class="idref" href="#input_exp:91"><span class="id" title="binder">input_exp</span></a> := (<a class="idref" href="RC.Proc.html#Param"><span class="id" title="constructor">Param</span></a> <a class="idref" href="RC.Compile.html#input_ind:90"><span class="id" title="variable">input_ind</span></a>) <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr1:92" class="idref" href="#pr1:92"><span class="id" title="binder">pr1</span></a> := <a class="idref" href="RC.Compile.html#pr:87"><span class="id" title="variable">pr</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr2:93" class="idref" href="#pr2:93"><span class="id" title="binder">pr2</span></a> := <a class="idref" href="RC.Compile.html#pr1:92"><span class="id" title="variable">pr1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Evnt"><span class="id" title="constructor">Evnt</span></a> (<a class="idref" href="RC.Act.html#Prm"><span class="id" title="constructor">Prm</span></a> <a class="idref" href="RC.Compile.html#newl:89"><span class="id" title="variable">newl</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> <span class="id" title="tactic">in</span><br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr3:94" class="idref" href="#pr3:94"><span class="id" title="binder">pr3</span></a> :=  <a class="idref" href="RC.Compile.html#pr2:93"><span class="id" title="variable">pr2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a>  <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[(</span></a><a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#t:88"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a><a class="idref" href="RC.Compile.html#newl:89"><span class="id" title="variable">newl</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> <a class="idref" href="RC.Compile.html#input_exp:91"><span class="id" title="variable">input_exp</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">)]</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.SaturationLoop.html#saturate"><span class="id" title="definition">saturate</span></a> <a class="idref" href="RC.Compile.html#Compiling.unv"><span class="id" title="variable">unv</span></a> <a class="idref" href="RC.Compile.html#pr3:94"><span class="id" title="variable">pr3</span></a>)<br/>
+<br/>
+&nbsp;&nbsp;.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="handle_Prm'" class="idref" href="#handle_Prm'"><span class="id" title="definition">handle_Prm'</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:95" class="idref" href="#pr:95"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="t:96" class="idref" href="#t:96"><span class="id" title="binder">t</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) :  <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="newl:97" class="idref" href="#newl:97"><span class="id" title="binder">newl</span></a> := <a class="idref" href="RC.Proc.html#fresh_loc"><span class="id" title="definition">fresh_loc</span></a> <a class="idref" href="RC.Compile.html#pr:95"><span class="id" title="variable">pr</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="input_ind:98" class="idref" href="#input_ind:98"><span class="id" title="binder">input_ind</span></a> := <a class="idref" href="RC.Proc.html#fresh_input_index"><span class="id" title="definition">fresh_input_index</span></a> <a class="idref" href="RC.Compile.html#pr:95"><span class="id" title="variable">pr</span></a>  <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="input_exp:99" class="idref" href="#input_exp:99"><span class="id" title="binder">input_exp</span></a> := (<a class="idref" href="RC.Proc.html#Param"><span class="id" title="constructor">Param</span></a> <a class="idref" href="RC.Compile.html#input_ind:98"><span class="id" title="variable">input_ind</span></a>) <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr1:100" class="idref" href="#pr1:100"><span class="id" title="binder">pr1</span></a> := <a class="idref" href="RC.Compile.html#pr:95"><span class="id" title="variable">pr</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr2:101" class="idref" href="#pr2:101"><span class="id" title="binder">pr2</span></a> := <a class="idref" href="RC.Compile.html#pr1:100"><span class="id" title="variable">pr1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Evnt"><span class="id" title="constructor">Evnt</span></a> (<a class="idref" href="RC.Act.html#Prm"><span class="id" title="constructor">Prm</span></a> <a class="idref" href="RC.Compile.html#newl:97"><span class="id" title="variable">newl</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> <span class="id" title="tactic">in</span><br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr3:102" class="idref" href="#pr3:102"><span class="id" title="binder">pr3</span></a> :=  <a class="idref" href="RC.Compile.html#pr2:101"><span class="id" title="variable">pr2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a>  <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[(</span></a><a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#t:96"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a><a class="idref" href="RC.Compile.html#newl:97"><span class="id" title="variable">newl</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> <a class="idref" href="RC.Compile.html#input_exp:99"><span class="id" title="variable">input_exp</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">)]</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#pr3:102"><span class="id" title="variable">pr3</span></a>.<br/>
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="handle_Rcv" class="idref" href="#handle_Rcv"><span class="id" title="definition">handle_Rcv</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:103" class="idref" href="#pr:103"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="ch:104" class="idref" href="#ch:104"><span class="id" title="binder">ch</span></a> <a id="t:105" class="idref" href="#t:105"><span class="id" title="binder">t</span></a> : <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Proc.html#first_loc_for"><span class="id" title="definition">first_loc_for</span></a> <a class="idref" href="RC.Compile.html#pr:103"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#ch:104"><span class="id" title="variable">ch</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span> ⇒ <a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">s</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">lch</span> ⇒ <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="newl:106" class="idref" href="#newl:106"><span class="id" title="binder">newl</span></a> := <a class="idref" href="RC.Proc.html#fresh_loc"><span class="id" title="definition">fresh_loc</span></a> <a class="idref" href="RC.Compile.html#pr:103"><span class="id" title="variable">pr</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="read_ind:107" class="idref" href="#read_ind:107"><span class="id" title="binder">read_ind</span></a> := <a class="idref" href="RC.Proc.html#fresh_read_index"><span class="id" title="definition">fresh_read_index</span></a> <a class="idref" href="RC.Compile.html#pr:103"><span class="id" title="variable">pr</span></a>  <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="read_exp:108" class="idref" href="#read_exp:108"><span class="id" title="binder">read_exp</span></a> := (<a class="idref" href="RC.Proc.html#Read"><span class="id" title="constructor">Read</span></a> <a class="idref" href="RC.Compile.html#read_ind:107"><span class="id" title="variable">read_ind</span></a>) <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr1:109" class="idref" href="#pr1:109"><span class="id" title="binder">pr1</span></a> := <a class="idref" href="RC.Compile.html#pr:103"><span class="id" title="variable">pr</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr2:110" class="idref" href="#pr2:110"><span class="id" title="binder">pr2</span></a> := <a class="idref" href="RC.Compile.html#pr1:109"><span class="id" title="variable">pr1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Proc.html#Evnt"><span class="id" title="constructor">Evnt</span></a> (<a class="idref" href="RC.Act.html#Rcv"><span class="id" title="constructor">Rcv</span></a> <span class="id" title="var">lch</span> <a class="idref" href="RC.Compile.html#newl:106"><span class="id" title="variable">newl</span></a>)<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a> <span class="id" title="tactic">in</span><br/>
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">let</span> <a id="pr3:111" class="idref" href="#pr3:111"><span class="id" title="binder">pr3</span></a> :=  <a class="idref" href="RC.Compile.html#pr2:110"><span class="id" title="variable">pr2</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a>  <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[(</span></a><a class="idref" href="RC.Proc.html#Bind"><span class="id" title="constructor">Bind</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#t:105"><span class="id" title="variable">t</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">,</span></a><a class="idref" href="RC.Compile.html#newl:106"><span class="id" title="variable">newl</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#e6756e10c36f149b18b4a8741ed83079"><span class="id" title="notation">)</span></a> <a class="idref" href="RC.Compile.html#read_exp:108"><span class="id" title="variable">read_exp</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">)]</span></a> <span class="id" title="tactic">in</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.SaturationLoop.html#saturate"><span class="id" title="definition">saturate</span></a> <a class="idref" href="RC.Compile.html#Compiling.unv"><span class="id" title="variable">unv</span></a> <a class="idref" href="RC.Compile.html#pr3:111"><span class="id" title="variable">pr3</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span> .<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Handle an input, output, send, or receive 
+</div>
+<div class="code">
+
+<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">Definition</span> <a id="handle_action" class="idref" href="#handle_action"><span class="id" title="definition">handle_action</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:112" class="idref" href="#pr:112"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) (<a id="act:113" class="idref" href="#act:113"><span class="id" title="binder">act</span></a>: <a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) : <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Compile.html#act:113"><span class="id" title="variable">act</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Prm"><span class="id" title="constructor">Prm</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> ⇒ <a class="idref" href="RC.Compile.html#handle_Prm"><span class="id" title="definition">handle_Prm</span></a> <a class="idref" href="RC.Compile.html#pr:112"><span class="id" title="variable">pr</span></a> <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Ret"><span class="id" title="constructor">Ret</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> ⇒ <a class="idref" href="RC.Compile.html#handle_Ret"><span class="id" title="definition">handle_Ret</span></a> <a class="idref" href="RC.Compile.html#pr:112"><span class="id" title="variable">pr</span></a> <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Snd"><span class="id" title="constructor">Snd</span></a> <span class="id" title="var">ch</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> ⇒ <a class="idref" href="RC.Compile.html#handle_Snd"><span class="id" title="definition">handle_Snd</span></a> <a class="idref" href="RC.Compile.html#pr:112"><span class="id" title="variable">pr</span></a> <span class="id" title="var">ch</span> <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;| <a class="idref" href="RC.Act.html#Rcv"><span class="id" title="constructor">Rcv</span></a> <span class="id" title="var">ch</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Nat.html#t"><span class="id" title="definition">t</span></a> ⇒ <a class="idref" href="RC.Compile.html#handle_Rcv"><span class="id" title="definition">handle_Rcv</span></a> <a class="idref" href="RC.Compile.html#pr:112"><span class="id" title="variable">pr</span></a> <span class="id" title="var">ch</span> <span class="id" title="var">t</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">End</span> <a class="idref" href="RC.Compile.html#Compiling"><span class="id" title="section">Compiling</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Perhaps it is misleading to move <span class="inlinecode"><span class="id" title="var">a</span></span> to the tr_done list in the
+    case that  <span class="inlinecode"><a class="idref" href="RC.Compile.html#handle_action"><span class="id" title="definition">handle_action</span></a></span> fails, but it makes definitions and
+    reasoning a bit simpler.  
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="step" class="idref" href="#step"><span class="id" title="definition">step</span></a> (<a id="rl:115" class="idref" href="#rl:115"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) (<a id="st:116" class="idref" href="#st:116"><span class="id" title="binder">st</span></a> :  <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) :  <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="RC.Compile.html#st:116"><span class="id" title="variable">st</span></a> <span class="id" title="keyword">with</span><br/>
+<br/>
+&nbsp;&nbsp;|  (<a class="idref" href="RC.Compile.html#mkState"><span class="id" title="constructor">mkState</span></a> <span class="id" title="var">_</span> <span class="id" title="var">_</span> (<a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <span class="id" title="var">_</span>)) ⇒ <a class="idref" href="RC.Compile.html#st:116"><span class="id" title="variable">st</span></a><br/>
+<br/>
+&nbsp;&nbsp;|  (<a class="idref" href="RC.Compile.html#mkState"><span class="id" title="constructor">mkState</span></a> <span class="id" title="var">_</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ae9a5e1034e143b218b09d8e454472bd"><span class="id" title="notation">[]</span></a> <span class="id" title="var">_</span>) ⇒ <a class="idref" href="RC.Compile.html#st:116"><span class="id" title="variable">st</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;|  (<a class="idref" href="RC.Compile.html#mkState"><span class="id" title="constructor">mkState</span></a> <span class="id" title="var">d</span> (<span class="id" title="var">a</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a><span class="id" title="var">rest</span>) (<a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <span class="id" title="var">pr</span>))  ⇒<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Compile.html#mkState"><span class="id" title="constructor">mkState</span></a> (<span class="id" title="var">d</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><span class="id" title="var">a</span><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>) <span class="id" title="var">rest</span> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Compile.html#handle_action"><span class="id" title="definition">handle_action</span></a> <a class="idref" href="RC.Compile.html#rl:115"><span class="id" title="variable">rl</span></a> <span class="id" title="var">pr</span> <span class="id" title="var">a</span>) )<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="step_char" class="idref" href="#step_char"><span class="id" title="lemma">step_char</span></a> (<a id="rl:118" class="idref" href="#rl:118"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) (<a id="st:119" class="idref" href="#st:119"><span class="id" title="binder">st</span></a>: <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#step"><span class="id" title="definition">step</span></a> <a class="idref" href="RC.Compile.html#rl:118"><span class="id" title="variable">rl</span></a> <a class="idref" href="RC.Compile.html#st:119"><span class="id" title="variable">st</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Compile.html#st:119"><span class="id" title="variable">st</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">∨</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">(</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">∃</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">(</span></a><a id="d:120" class="idref" href="#d:120"><span class="id" title="binder">d</span></a> <a id="rest:121" class="idref" href="#rest:121"><span class="id" title="binder">rest</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> (<a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) )<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a id="a:122" class="idref" href="#a:122"><span class="id" title="binder">a</span></a>: <a class="idref" href="RC.Act.html#Act"><span class="id" title="inductive">Act</span></a> <a class="idref" href="RC.Term.html#Term"><span class="id" title="inductive">Term</span></a>) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a id="pr:123" class="idref" href="#pr:123"><span class="id" title="binder">pr</span></a> : <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">),</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#st:119"><span class="id" title="variable">st</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Compile.html#mkState"><span class="id" title="constructor">mkState</span></a> <a class="idref" href="RC.Compile.html#d:120"><span class="id" title="variable">d</span></a> (<a class="idref" href="RC.Compile.html#a:122"><span class="id" title="variable">a</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#::list_scope:x_'::'_x"><span class="id" title="notation">::</span></a><a class="idref" href="RC.Compile.html#rest:121"><span class="id" title="variable">rest</span></a>) (<a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <a class="idref" href="RC.Compile.html#pr:123"><span class="id" title="variable">pr</span></a>)<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">∧</span></a> <a class="idref" href="RC.Compile.html#step"><span class="id" title="definition">step</span></a> <a class="idref" href="RC.Compile.html#rl:118"><span class="id" title="variable">rl</span></a> <a class="idref" href="RC.Compile.html#st:119"><span class="id" title="variable">st</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">(</span></a><a class="idref" href="RC.Compile.html#mkState"><span class="id" title="constructor">mkState</span></a> (<a class="idref" href="RC.Compile.html#d:120"><span class="id" title="variable">d</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">[</span></a><a class="idref" href="RC.Compile.html#a:122"><span class="id" title="variable">a</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Lists.List.html#ddd65c2f7ee73ecec433744948d846bb"><span class="id" title="notation">]</span></a>) <a class="idref" href="RC.Compile.html#rest:121"><span class="id" title="variable">rest</span></a> <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<a class="idref" href="RC.Compile.html#handle_action"><span class="id" title="definition">handle_action</span></a> <a class="idref" href="RC.Compile.html#rl:118"><span class="id" title="variable">rl</span></a> <a class="idref" href="RC.Compile.html#pr:123"><span class="id" title="variable">pr</span></a> <a class="idref" href="RC.Compile.html#a:122"><span class="id" title="variable">a</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">)</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">st</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">the_pr0</span> <span class="id" title="var">eqn</span>:<span class="id" title="var">e</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">shelve</span>.<br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">left</span>. <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">destruct</span> <span class="id" title="var">tr_todo0</span>; <span class="id" title="var">easy</span>. }<br/>
+&nbsp;&nbsp;<span class="id" title="var">Unshelve</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">tr_todo0</span> <span class="id" title="var">eqn</span>:<span class="id" title="var">e1</span>.<br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">left</span>. <span class="id" title="tactic">simpl</span>. <span class="id" title="var">easy</span>. }    <br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">right</span>. <span class="id" title="tactic">∃</span> <span class="id" title="var">tr_done0</span>; <span class="id" title="tactic">∃</span> <span class="id" title="var">l</span>; <span class="id" title="tactic">∃</span> <span class="id" title="var">a</span>; <span class="id" title="tactic">∃</span> <span class="id" title="var">x</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">split</span>. <span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>; <span class="id" title="var">easy</span>.<br/>
+&nbsp;&nbsp;}<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="no_step" class="idref" href="#no_step"><span class="id" title="lemma">no_step</span></a>  (<a id="st:124" class="idref" href="#st:124"><span class="id" title="binder">st</span></a> :  <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a>) (<a id="m:125" class="idref" href="#m:125"><span class="id" title="binder">m</span></a>: <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Strings.String.html#string"><span class="id" title="inductive">string</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> <a class="idref" href="RC.Compile.html#st:124"><span class="id" title="variable">st</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Utilities.html#NoneE"><span class="id" title="constructor">NoneE</span></a> <a class="idref" href="RC.Compile.html#m:125"><span class="id" title="variable">m</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a><br/>
+&nbsp;&nbsp;<span class="id" title="keyword">∀</span> <a id="rl:126" class="idref" href="#rl:126"><span class="id" title="binder">rl</span></a>, <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#step"><span class="id" title="definition">step</span></a> <a class="idref" href="RC.Compile.html#rl:126"><span class="id" title="variable">rl</span></a> <a class="idref" href="RC.Compile.html#st:124"><span class="id" title="variable">st</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Compile.html#st:124"><span class="id" title="variable">st</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">H</span> <span class="id" title="var">rl</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">st</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">destruct</span> <span class="id" title="var">tr_todo0</span>; <span class="id" title="var">easy</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a id="step_decreasing" class="idref" href="#step_decreasing"><span class="id" title="lemma">step_decreasing</span></a> (<a id="rl:127" class="idref" href="#rl:127"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) :<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Iteration.html#decreasing"><span class="id" title="definition">decreasing</span></a> (<a class="idref" href="RC.Compile.html#step"><span class="id" title="definition">step</span></a> <a class="idref" href="RC.Compile.html#rl:127"><span class="id" title="variable">rl</span></a>) <a class="idref" href="RC.Compile.html#measure"><span class="id" title="definition">measure</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Iteration.html#decreasing"><span class="id" title="definition">decreasing</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">x</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">h</span>:= @<a class="idref" href="RC.Compile.html#step_char"><span class="id" title="lemma">step_char</span></a> <span class="id" title="var">rl</span> <span class="id" title="var">x</span>).<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">h</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">h1</span> | <span class="id" title="var">h2</span>].<br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">left</span>. <span class="id" title="tactic">auto</span>. } <br/>
+&nbsp;&nbsp;{ <span class="id" title="tactic">right</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">h2</span> <span class="id" title="keyword">as</span> [<span class="id" title="var">d</span> [<span class="id" title="var">rest</span> [<span class="id" title="var">a</span> [<span class="id" title="var">pr</span> [<span class="id" title="var">P1</span> <span class="id" title="var">P2</span>]]]]].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">subst</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="RC.Compile.html#measure"><span class="id" title="definition">measure</span></a>. <span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">lia</span>. }<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="steps_n" class="idref" href="#steps_n"><span class="id" title="definition">steps_n</span></a>  (<a id="rl:128" class="idref" href="#rl:128"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) : <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Unicode.Utf8_core.html#c41c566ddac4c1298b9e7dd2bae1c794"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Unicode.Utf8_core.html#c41c566ddac4c1298b9e7dd2bae1c794"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Iteration.html#loop"><span class="id" title="definition">loop</span></a> (<a class="idref" href="RC.Compile.html#step"><span class="id" title="definition">step</span></a> <a class="idref" href="RC.Compile.html#rl:128"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="final_state" class="idref" href="#final_state"><span class="id" title="definition">final_state</span></a> (<a id="rl:129" class="idref" href="#rl:129"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) : <a class="idref" href="RC.Compile.html#state"><span class="id" title="record">state</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#steps_n"><span class="id" title="definition">steps_n</span></a> <a class="idref" href="RC.Compile.html#rl:129"><span class="id" title="variable">rl</span></a> (<a class="idref" href="RC.Compile.html#measure"><span class="id" title="definition">measure</span></a> (<a class="idref" href="RC.Compile.html#initialize"><span class="id" title="definition">initialize</span></a> <a class="idref" href="RC.Compile.html#rl:129"><span class="id" title="variable">rl</span></a>)) (<a class="idref" href="RC.Compile.html#initialize"><span class="id" title="definition">initialize</span></a> <a class="idref" href="RC.Compile.html#rl:129"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a id="compile" class="idref" href="#compile"><span class="id" title="definition">compile</span></a> (<a id="rl:130" class="idref" href="#rl:130"><span class="id" title="binder">rl</span></a>: <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) : <a class="idref" href="RC.Utilities.html#optionE"><span class="id" title="inductive">optionE</span></a> <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a> :=<br/>
+&nbsp;&nbsp;<a class="idref" href="RC.Compile.html#the_pr"><span class="id" title="projection">the_pr</span></a> (<a class="idref" href="RC.Compile.html#final_state"><span class="id" title="definition">final_state</span></a> <a class="idref" href="RC.Compile.html#rl:130"><span class="id" title="variable">rl</span></a>).<br/>
+
+<br/>
+<span class="id" title="keyword">Inductive</span> <a id="compileR" class="idref" href="#compileR"><span class="id" title="inductive">compileR</span></a> (<a id="rl:131" class="idref" href="#rl:131"><span class="id" title="binder">rl</span></a> : <a class="idref" href="RC.Role.html#Role"><span class="id" title="definition">Role</span></a>) (<a id="pr:132" class="idref" href="#pr:132"><span class="id" title="binder">pr</span></a>: <a class="idref" href="RC.Proc.html#Proc"><span class="id" title="definition">Proc</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<a id="compileR1" class="idref" href="#compileR1"><span class="id" title="constructor">compileR1</span></a> : <a class="idref" href="RC.Compile.html#compile"><span class="id" title="definition">compile</span></a> <a class="idref" href="RC.Compile.html#rl:131"><span class="id" title="variable">rl</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#6cd0f7b28b6092304087c7049437bb1a"><span class="id" title="notation">=</span></a> <a class="idref" href="RC.Utilities.html#SomeE"><span class="id" title="constructor">SomeE</span></a> <a class="idref" href="RC.Compile.html#pr:132"><span class="id" title="variable">pr</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.17.1/stdlib//Coq.Init.Logic.html#::type_scope:x_'-&gt;'_x"><span class="id" title="notation">→</span></a> <a class="idref" href="RC.Compile.html#compileR:133"><span class="id" title="inductive">compileR</span></a> <a class="idref" href="RC.Compile.html#rl:131"><span class="id" title="variable">rl</span></a> <a class="idref" href="RC.Compile.html#pr:132"><span class="id" title="variable">pr</span></a> .<br/>
+
+<br/>
+</div>
+</div>
+
+<div id="footer">
+<hr/><a href="index.html">Index</a><hr/>This page has been generated by <a href="http://coq.inria.fr/">coqdoc</a>
+</div>
+
+</div>
+
+</body>
+</html>
