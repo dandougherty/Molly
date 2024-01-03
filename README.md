@@ -12,9 +12,9 @@ runtime semantics.  A notable feature of our approach is that we
 assume that encryption is randomized.  Thus, at the runtime level we
 treat encryption as a relation rather than a function.
     
-The paper "Molly: A Verified Role Compiler" on the ArXiv [identifier TBA] gives a
-comprehensive description of the code and a prose account of the
-proofs.
+The paper "Molly: A Verified Compiler for Cryptoprotocol Roles" on the
+ArXiv [arXiv:2311.13692] gives a comprehensive description of the code
+and a prose account of the proofs.
 
 This code  builds under Coq 8.17.1 with the command
 
