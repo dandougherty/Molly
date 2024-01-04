@@ -1,3 +1,5 @@
+<!-- Time-stamp: <Thu 1/4/24 10:45 Dan Dougherty README.md> -->
+
 # Molly: A Verified Compiler for Cryptoprotocol Roles
 
 Molly is a program that compiles cryptographic protocol roles written
