@@ -1,4 +1,4 @@
- (* Time-stamp: <Wed 11/22/23 11:27 Dan Dougherty Runtime.v>
+ (* Time-stamp: <Sun 4/14/24 14:11 Dan Dougherty Runtime.v>
  *)
 
 (** We only state as axioms the facts about pairing and unpairing,
@@ -56,8 +56,10 @@ Class RTVal := {
     genr : nat -> sort -> rtval  ;
 
     rtpubof : rtval -> option rtval;
-
     rtkypr : rtval -> rtval ->  bool;
+    rtinv :  rtval -> rtval ;
+
+
 
     (** Axioms *)
     
@@ -68,25 +70,60 @@ Class RTVal := {
     
     (** *** pairing *)
     
+    rtpairI
+    : forall r r1 r2,
+        (rtfrst r = Some r1 /\ rtscnd r = Some r2) ->
+        rtpair r1 r2 = r ;
+
+    (* pairEL and pairER  are not used!
+      They would be needed for a version of Preserving Transcripts
+     *)
     rtpairEL 
     : forall r1 r2, rtfrst (rtpair r1 r2) = Some r1;
     rtpairER
     : forall r1 r2, rtscnd (rtpair r1 r2) = Some r2; 
-    rtpairI
-    : forall r r1 r2,
-      rtpair r1 r2 = r  <->
-        (rtfrst r = Some r1 /\ rtscnd r = Some r2);
     
-
-    (** *** [rtkypr] vs [rtpubof] *)
-
     pubof_keypair
       : forall r1 r2, rtkypr r1 r2 = true <->
                         (rtpubof r1 = (Some r2))  ;
 
+    (* ======================================== *)
+    (** *** encryption and decryption *)
+
+   rtDecrEncr 
+     : forall (rp re rkd  : rtval) ,
+           rtdecr re rkd = Some rp <->
+           rtencr rp (rtinv rkd) re
+       ;
+
 
 
   } .  (* end of Typeclass defn *)
+
+
+(* ------------------- *)
+
+
+Context {RTV : RTVal}. (* determines [rtval] *)
+
+(** Converse of rtpairI is derivable *)
+
+Lemma rtpairIE (r r1 r2: rtval) :
+  rtpair r1 r2 = r  -> 
+  (rtfrst r = Some r1 /\ rtscnd r = Some r2).
+Proof.
+ intros h.
+ split. 
+ + rewrite <- h.
+   apply rtpairEL.
+
+ + rewrite <- h.
+   apply rtpairER.
+Qed.
+
+
+
+(** *** [rtkypr] vs [rtpubof] *)
 
 
 (* ------------------- *)
