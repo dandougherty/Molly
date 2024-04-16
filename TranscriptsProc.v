@@ -1,4 +1,4 @@
-  (* Time-stamp: <Wed 11/22/23 11:34 Dan Dougherty TranscriptsProc.v> *)
+  (* Time-stamp: <Mon 4/15/24 11:13 Dan Dougherty TranscriptsProc.v> *)
 
 From Coq Require Import
  String List
@@ -126,7 +126,7 @@ Section ProcVal.
   Definition sto_inverse : Prop :=
     forall  l1 l2 ,
       In (Ckypr l1 l2) pr ->
-      rtkypr (sto l1) (sto l2) = true.
+      rtkypr (sto l1) (sto l2) .
 
 
 End ProcVal. 

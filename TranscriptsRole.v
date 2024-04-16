@@ -1,4 +1,4 @@
-(* Time-stamp: <Wed 11/22/23 11:35 Dan Dougherty TranscriptsRole.v> *)
+(* Time-stamp: <Mon 4/15/24 11:12 Dan Dougherty TranscriptsRole.v> *)
 
 (**  
    
@@ -105,7 +105,7 @@ Section TermVal.
     (** quotation: the obvious condition *)
 
     Definition tv_qot :=
-      forall  s r,
+      forall  s (r: rtval),
         tv (Qt s) r ->
         r = rtquote s.
 
@@ -114,11 +114,12 @@ Section TermVal.
     (** inverses : subtle! *)
     
     Definition tv_key_pair :=
-      forall t t' r r',
+      forall t t' (r r' : rtval),
         makes_key_pair t t' = true ->
         tv t r ->
         tv t' r' ->
-        rtkypr r r' = true.
+        rtkypr r r'.
+    (* rtkypr r r' = true. *)
  
     (** says that tv maps both parts of a key pair
         

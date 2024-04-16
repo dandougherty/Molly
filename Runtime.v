@@ -1,16 +1,4 @@
- (* Time-stamp: <Sun 4/14/24 14:11 Dan Dougherty Runtime.v>
- *)
-
-(** We only state as axioms the facts about pairing and unpairing,
-because those are the ony axioms we need for Reflecting Transcripts.
-
-We don't even need the encryption-decryption duality, because we use
-the disjunctive condition in the defn of role transcripts.
-
-This is all a refelction of the relatively unambitious correctness
-condition we prove.
-
-*)
+ (* Time-stamp: <Mon 4/15/24 11:50 Dan Dougherty Runtime.v>  *)
 
 From Coq Require Import 
   String 
@@ -37,8 +25,12 @@ defined.
  
 Class RTVal := {
     rtval : Type ;
-    rtval_eq_dec : 
-    forall x y : rtval, {x = y} + {~ x = y};
+    rt_beq: rtval -> rtval -> bool;
+    rt_beq_eq: forall x y, if rt_beq x y 
+                           then x = y 
+                           else x <> y;
+    (* rtval_eq_dec :  *)
+    (* forall x y : rtval, {x = y} + {~ x = y}; *)
 
     (** Operators *)
     rtsort : rtval -> sort ;
@@ -56,10 +48,7 @@ Class RTVal := {
     genr : nat -> sort -> rtval  ;
 
     rtpubof : rtval -> option rtval;
-    rtkypr : rtval -> rtval ->  bool;
     rtinv :  rtval -> rtval ;
-
-
 
     (** Axioms *)
     
@@ -82,10 +71,6 @@ Class RTVal := {
     : forall r1 r2, rtfrst (rtpair r1 r2) = Some r1;
     rtpairER
     : forall r1 r2, rtscnd (rtpair r1 r2) = Some r2; 
-    
-    pubof_keypair
-      : forall r1 r2, rtkypr r1 r2 = true <->
-                        (rtpubof r1 = (Some r2))  ;
 
     (* ======================================== *)
     (** *** encryption and decryption *)
@@ -103,8 +88,10 @@ Class RTVal := {
 
 (* ------------------- *)
 
+Section RuntimeAux.
 
-Context {RTV : RTVal}. (* determines [rtval] *)
+Context `{RTV : RTVal}. (* determines [rtval] *)
+
 
 (** Converse of rtpairI is derivable *)
 
@@ -122,9 +109,11 @@ Proof.
 Qed.
 
 
+(** *** Notion of runtime key pair is definable *)
+Definition rtkypr (r1 r2 : rtval) : Prop :=
+  rtpubof r1 = Some r2.
 
-(** *** [rtkypr] vs [rtpubof] *)
-
+End RuntimeAux.
 
 (* ------------------- *)
 
